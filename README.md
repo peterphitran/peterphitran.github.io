@@ -24,3 +24,7 @@ Inspo from
 - https://kasad.com/
 - https://youdahe.dev/index.html
 - https://www.kevindw.dev/
+
+Future Portfolio Inspo
+- https://mohitvirli.github.io/
+- https://www.madebynull.com/
