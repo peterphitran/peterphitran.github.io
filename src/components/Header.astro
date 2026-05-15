@@ -1,106 +1,86 @@
 ---
 import { Icon } from "astro-icon/components";
 
-type NavItem = {
-    path: string;
-    name: string
-};
-
-const navItems: NavItem[] = [
-    { 
-        name: "Home",
-        path: "/"
-    },
-    {
-        name: "Experience",
-        path: "/"
-    },
-    {
-        name: "Projects",
-        path: "/"
-    },
-    {
-        name: "Volunteer",
-        path: "/"
-    },
-    {
-        name: "Coursework",
-        path: "/"
-    },
-    {
-        name: "Photography", 
-        path: "/"
-    },
+const moreItems = [
+    { name: "Experience", path: "/#experience" },
+    { name: "Projects",   path: "/#projects" },
+    { name: "Volunteer",  path: "/#volunteer" },
+    { name: "Coursework", path: "/#coursework" },
 ];
 ---
 
-<header class="w-full">
+<header class="w-full border-b border-border">
     <div
-        class="font-sans mx-auto box-content flex h-4 max-w-screen-xl flex-row items-center justify-between p-4"
+        class="font-sans mx-auto box-content flex h-4 max-w-5xl flex-row items-center justify-between px-5 sm:px-6 py-4"
     >
-        <!-- left side of the header -->
-        <a href="/" class="font-bold"> Welcome! 👋 </a>
+        <!-- left: wordmark -->
+        <a href="/" class="text-sm font-medium tracking-wide text-primary hover:text-accent transition-colors duration-200">Peter Tran</a>
 
-        <!-- right side of the header -->
-        <nav class="text-sm text-gray-700 font-bold">
-            <menu class="flex flex-row gap-4 max-sm:hidden">
-                {
-                    navItems.map(({ path, name }) => (
-                        <li
-                            class={
-                                Astro.url.pathname === path ? "font-bold" : ""
-                            }
-                        >
-                            <a href={path}>{name}</a>
-                        </li>
-                    ))
-                }
+        <!-- right: nav -->
+        <nav class="text-sm text-secondary">
+            <!-- Desktop -->
+            <menu class="flex flex-row items-center gap-6 max-sm:hidden">
+                <li>
+                    <a href="/" class="hover:text-primary transition-colors duration-200 underline-offset-4 hover:underline">Home</a>
+                </li>
+                <li>
+                    <a href="/gallery" class="hover:text-primary transition-colors duration-200 underline-offset-4 hover:underline">Gallery</a>
+                </li>
+                <!-- More dropdown -->
+                <li class="relative">
+                    <details id="more-dropdown" class="group/more">
+                        <summary class="flex items-center gap-1 cursor-pointer list-none [&::-webkit-details-marker]:hidden hover:text-primary transition-colors duration-200">
+                            More
+                            <Icon name="fa7-solid:chevron-down" class="size-2.5 transition-transform duration-200 group-open/more:rotate-180" />
+                        </summary>
+                        <div class="absolute top-full right-0 pt-1 z-40">
+                            <div class="w-44 bg-background border border-border rounded-lg shadow-md p-3">
+                                <ul class="flex flex-col gap-2">
+                                    {moreItems.map(({ path, name }) => (
+                                        <li>
+                                            <a href={path} class="block text-secondary hover:text-primary transition-colors duration-200 py-0.5">{name}</a>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
+                    </details>
+                </li>
             </menu>
-            <details
-                id="hamburger"
-                class="peer group hidden max-sm:block relative"
-            >
+
+            <!-- Mobile hamburger -->
+            <details id="hamburger" class="peer group hidden max-sm:block relative">
                 <summary class="inline cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-                    <Icon
-                        name="fa7-solid:bars"
-                        class="inline group-open:hidden"
-                        role="button"
-                        aria-label="nav menu">
-                    </Icon>
+                    <Icon name="fa7-solid:bars" class="inline group-open:hidden" role="button" aria-label="nav menu" />
                 </summary>
-                <div class="bg-background text-primary rounded-xl shadow-2xl p-6 
-                absolute top-0 right-0 w-40 z-40">
-                    <menu class="flex flex-col gap-4 text-base text-right">
-                        {
-                            navItems.map(({ path, name }) => (
-                                <li
-                                    class={
-                                        Astro.url.pathname === path ? "font-bold" : ""
-                                    }
-                                >
-                                    <a href={path}>{name}</a>
-                                </li>
-                            ))
-                        }   
+                <div class="bg-background text-primary border border-border rounded-lg shadow-md p-5 absolute top-0 right-0 w-44 z-40">
+                    <menu class="flex flex-col gap-3 text-sm text-right text-secondary">
+                        <li><a href="/" class="hover:text-primary transition-colors duration-200">Home</a></li>
+                        <li><a href="/gallery" class="hover:text-primary transition-colors duration-200">Gallery</a></li>
+                        <li class="pt-2 border-t border-border text-xs uppercase tracking-widest text-secondary/60">More</li>
+                        {moreItems.map(({ path, name }) => (
+                            <li>
+                                <a href={path} class="hover:text-primary transition-colors duration-200">{name}</a>
+                            </li>
+                        ))}
                     </menu>
                 </div>
             </details>
-
         </nav>
     </div>
 </header>
 
 <script>
-    const hamburger = document.getElementById(
-        "hamburger",
-    ) as HTMLDetailsElement | null;
+    const hamburger = document.getElementById("hamburger") as HTMLDetailsElement | null;
+    const moreDropdown = document.getElementById("more-dropdown") as HTMLDetailsElement | null;
 
     document.addEventListener("click", (e) => {
-        if (hamburger && hamburger.open) {
-            const target = e.target as HTMLElement;
-            if (!hamburger.contains(target)) {
-                hamburger.open = false;
-            }
+        const target = e.target as HTMLElement;
+        if (hamburger && hamburger.open && !hamburger.contains(target)) {
+            hamburger.open = false;
+        }
+        if (moreDropdown && moreDropdown.open && !moreDropdown.contains(target)) {
+            moreDropdown.open = false;
         }
     });
 </script>
