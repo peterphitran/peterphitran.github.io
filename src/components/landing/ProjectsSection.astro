@@ -8,16 +8,12 @@ export interface Props {
 const { headingStyle } = Astro.props
 ---
 
-<section class="bg-neutral-100">
-    <div class="p-8 pt-8 mx-auto max-w-screen-2xl sm:px-8">
+<section id="projects" class="mt-0 py-12">
+    <div class="px-5 sm:px-6 mx-auto max-w-5xl">
         <h2 class={headingStyle}>Projects</h2>
-        <a> 
-            My archive of projects I've finished working on, currently working on builing 3-4 new ones (not at the same time lol).
-        </a>
-        <!-- Divider with shadow -->
-        <div class="h-px from-transparent via-secondary shadow-md"></div>
-    </div>
-    <div class="overflow-hidden">
+        <p class="text-sm text-secondary mb-8 max-w-xl">
+            My archive of projects I've finished working on, currently working on building 3–4 new ones.
+        </p>
         <ProjectsCard/>
     </div>
-</section>  
+</section>
