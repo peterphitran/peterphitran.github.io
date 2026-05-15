@@ -1,0 +1,64 @@
+---
+interface Course {
+    code: string;
+    name: string;
+    semester?: string;
+}
+
+interface Category {
+    label: string;
+    courses: Course[];
+}
+
+const categories: Category[] = [
+    {
+        label: "Foundations",
+        courses: [
+            { code: "CSE 1310", name: "Intro to Computers & Programming", semester: "Fall 2023" },
+            { code: "CSE 1320", name: "Intermediate Programming", semester: "Spring 2024" },
+            { code: "CSE 2315", name: "Discrete Structures", semester: "Spring 2024" },
+            { code: "CSE 2320", name: "Algorithms & Data Structures", semester: "Fall 2024" },
+        ]
+    },
+    {
+        label: "Systems",
+        courses: [
+            { code: "CSE 2312", name: "Computer Organization & Assembly", semester: "Fall 2024" },
+            { code: "CSE 3320", name: "Operating Systems", semester: "Spring 2025" },
+        ]
+    },
+    {
+        label: "Software & Data",
+        courses: [
+            { code: "CSE 3310", name: "Fundamentals of Software Engineering", semester: "Fall 2025" },
+            { code: "CSE 3330", name: "Database Management Systems", semester: "Spring 2025" },
+        ]
+    },
+    {
+        label: "Theory",
+        courses: [
+            { code: "CSE 4305", name: "Automata & Formal Languages", semester: "Fall 2025" },
+            { code: "CSE 4308", name: "Artificial Intelligence", semester: "Spring 2026" },
+        ]
+    },
+];
+---
+
+<div class="space-y-8">
+    {categories.map((cat) => (
+        <div>
+            <p class="text-xs font-bold uppercase tracking-widest text-secondary mb-3">{cat.label}</p>
+            <div class="flex flex-wrap gap-3">
+                {cat.courses.map((course) => (
+                    <div class="border border-border rounded-lg px-4 py-3">
+                        <p class="text-xs font-mono text-secondary">{course.code}</p>
+                        <p class="text-sm font-medium text-primary mt-0.5">{course.name}</p>
+                        {course.semester && (
+                            <p class="text-xs text-secondary/70 mt-0.5">{course.semester}</p>
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
+    ))}
+</div>

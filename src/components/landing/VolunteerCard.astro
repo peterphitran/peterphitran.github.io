@@ -1,1 +1,26 @@
-<div></div>
+---
+interface VolunteerRole {
+    org: string;
+    role: string;
+    duration: string;
+}
+
+const roles: VolunteerRole[] = [
+    { org: "Adobe",        role: "Campus Ambassador",          duration: "Aug 2025 – Present" },
+    { org: "AWS",          role: "Student Builder Group Leader", duration: "Nov 2025 – Present" },
+    { org: "UTA SASE",     role: "Event Coordinator",          duration: "Fall 2025" },
+    { org: "UTA SASE",     role: "Treasurer",                  duration: "Spring 2026" },
+    { org: "ACM",          role: "Outreach Officer",           duration: "Jan 2026 – May 2026" },
+    { org: "Club Volleyball", role: "Media Team",              duration: "Men's & Women's" },
+];
+---
+
+<div class="flex flex-wrap gap-3">
+    {roles.map((r) => (
+        <div class="border border-border rounded-lg px-4 py-3 flex flex-col gap-0.5 min-w-[180px]">
+            <span class="text-xs font-bold uppercase tracking-wide text-primary">{r.org}</span>
+            <span class="text-sm text-secondary">{r.role}</span>
+            <span class="text-xs text-secondary/70">{r.duration}</span>
+        </div>
+    ))}
+</div>

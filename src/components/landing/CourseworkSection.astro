@@ -1,0 +1,19 @@
+---
+import CourseworkCard from './CourseworkCard.astro';
+
+export interface Props {
+    headingStyle: string;
+}
+
+const { headingStyle } = Astro.props;
+---
+
+<section id="coursework" class="mt-0 py-12">
+    <div class="px-5 sm:px-6 mx-auto max-w-5xl">
+        <h2 class={headingStyle}>Coursework</h2>
+        <p class="text-sm text-secondary mb-8 max-w-xl">
+            Relevant courses taken throughout my CS degree at UT Arlington.
+        </p>
+        <CourseworkCard />
+    </div>
+</section>
