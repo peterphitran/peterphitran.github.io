@@ -8,17 +8,13 @@ export interface Props {
 const { headingStyle } = Astro.props
 ---
 
-<section class="mt-12 lg:mt-26 bg-neutral-100 shadow-[inset_0_8px_12px_-4px_rgba(0,0,0,0.08)]">
-    <div class="p-8 mx-auto max-w-screen-2xl sm:px-8">
+<section id="experience" class="mt-16 lg:mt-24 py-12">
+    <div class="px-5 sm:px-6 mx-auto max-w-5xl">
         <h2 class={headingStyle}>Experience</h2>
-        <a> 
+        <p class="text-sm text-secondary mb-8 max-w-xl">
             An immense thank you to all the incredible companies for giving me the opportunity to grow and 
             learn from so many great individuals. I'm always looking for more opportunities!
-        </a>
-        
-        <!-- Divider with shadow -->
-        <div class="mt-4 mb-8 h-px from-transparent via-secondary shadow-md"></div>
-        
+        </p>
         <ExperiencesCard/>
     </div>
 </section>

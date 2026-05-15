@@ -6,7 +6,7 @@ import beautisolLogo from "@/content/experiences/beautisol.png";
 import misdLogo from "@/content/experiences/misd.png";
 
 interface Experience {
-    logo: ImageMetadata,
+    logo?: ImageMetadata,
     company: string,
     role: string,
     duration: string,
@@ -16,6 +16,23 @@ interface Experience {
 }
 
 const experiences: Experience[] = [
+    {
+        company: "UR2PhD Program",
+        role: "Research Participant",
+        duration: "2025 – Present",
+        description: [
+            "Selected for a competitive undergraduate research-to-PhD pipeline program."
+        ],
+    },
+    {
+        company: "AWS Student Builder Campus Leader",
+        role: "Campus Leader",
+        duration: "2025 – Present",
+        description: [
+            "Representing AWS on campus, organizing cloud workshops and connecting students with AWS resources and programs."
+        ],
+        technologies: ["AWS"],
+    },
     {
         logo: jpmcLogo,
         company: "JP Morgan Chase",
@@ -29,7 +46,7 @@ const experiences: Experience[] = [
         logo: beautisolLogo,
         company: "Beautisol",
         role: "Software Development Intern",
-        duration: "Present",
+        duration: "May 2025 – May 2026",
         description: [
             "Building out a customer-facing application showcasing products, and supporting future training and machine dashboards",
             "Engineered Azure IoT Hub OTA pipeline with device provisioning and device key derivation"
@@ -40,7 +57,7 @@ const experiences: Experience[] = [
         logo: misdLogo,
         company: "MISD Technology",
         role: "IT Intern",
-        duration: "Sept 2022 - May 2023",
+        duration: "Sept 2022 – May 2023",
         description: [
             "Managing district-wide hardware inventory, repairs, and IT support tasks."
         ],
@@ -50,51 +67,56 @@ const experiences: Experience[] = [
 ];
 ---
 
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+<div class="divide-y divide-border">
     {experiences.map((exp) => (
-        <article class="group relative rounded-lg border border-secondary bg-background p-6 shadow-sm transition-all duration-300">
-            <!-- Header -->
-            <div class="border-secondary flex flex-row items-center gap-2">
-                <Image 
-                    src={exp.logo} 
-                    alt={`${exp.company} logo`}
-                    width={35}
-                    height={35}
-                    densities={[1.5, 2]}
-                    quality={100}
-                    format="png"
-                    class="rounded"
-                />
-                <div class="flex-1">
-                    <h3 class="pl-2 text-xl font-semibold">
-                        {exp.company}
-                    </h3>
+        <div class="py-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+            <!-- Left: company info -->
+            <div class="flex-1">
+                <div class="flex items-center gap-3 mb-1">
+                    {exp.logo ? (
+                        <Image 
+                            src={exp.logo} 
+                            alt={`${exp.company} logo`}
+                            width={20}
+                            height={20}
+                            densities={[1.5, 2]}
+                            quality={100}
+                            format="png"
+                            class="rounded size-5"
+                        />
+                    ) : (
+                        <span class="size-5 rounded bg-border flex items-center justify-center text-[10px] font-bold text-secondary shrink-0">
+                            {exp.company[0]}
+                        </span>
+                    )}
+                    <h3 class="font-medium text-primary">{exp.company}</h3>
+                    <span class="text-secondary text-sm">·</span>
+                    <span class="text-secondary text-sm">{exp.role}</span>
                 </div>
+
+                <!-- Description -->
+                <ul class="mt-3 space-y-1.5 pl-8">
+                    {exp.description.map((item) => (
+                        <li class="text-sm text-primary/80 pl-3 border-l border-accent/40">{item}</li>
+                    ))}
+                </ul>
+
+                <!-- Technologies -->
+                {exp.technologies && exp.technologies.length > 0 && (
+                    <div class="mt-4 pl-8 flex flex-wrap gap-2">
+                        {exp.technologies.map((tech) => (
+                            <span class="text-xs text-secondary border border-border px-2 py-0.5 rounded">
+                                {tech}
+                            </span>
+                        ))}
+                    </div>
+                )}
             </div>
-            <div class="text-sm whitespace-nowrap">
-                <p class="mt-2 text-base font-medium">{exp.role}</p>
+
+            <!-- Right: duration -->
+            <div class="text-secondary text-sm whitespace-nowrap shrink-0 sm:text-right">
                 {exp.duration}
             </div>
-            <!-- Description -->
-            <ul class="mt-4 space-y-2">
-                {exp.description.map((item) => (
-                    <li class="flex gap-2">
-                        <span class="mt-1.5 text-xs">•</span>
-                        <span class="flex-1">{item}</span>
-                    </li>
-                ))}
-            </ul>
-            
-            <!-- Technologies -->
-            {exp.technologies && exp.technologies.length > 0 && (
-                <div class="mt-4 flex flex-wrap gap-2">
-                    {exp.technologies.map((tech) => (
-                        <span class="rounded-full bg-accent px-3 py-1 text-xs font-medium">
-                            {tech}
-                        </span>
-                    ))}
-                </div>
-            )}
-        </article>
+        </div>
     ))}
 </div>
