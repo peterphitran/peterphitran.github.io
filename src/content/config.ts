@@ -6,9 +6,18 @@ const gallery = defineCollection({
         title: z.string(),
         description: z.string().optional(),
         date: z.string(),
-        cover: z.string().optional(),   // path under /public, e.g. "/gallery/japan/cover.jpg"
-        photos: z.array(z.string()).default([]), // paths under /public
+        cover: z.string().optional(),
+        photos: z.array(z.string()).default([]),
     }),
 });
 
-export const collections = { gallery };
+const openSource = defineCollection({
+    type: 'content',
+    schema: z.object({
+        title: z.string(),
+        date: z.string(),
+        excerpt: z.string(),
+    }),
+});
+
+export const collections = { gallery, "open-source": openSource };
