@@ -65,7 +65,7 @@ One detail I had to get right across all three: the endpoint uses the **base art
 
 The docs site is heavy — Mermaid diagrams are rendered at build time via Playwright Chromium, and the dev server on a Windows filesystem (`/mnt/c`) can take minutes to cold start. Running a full `bun dev` to check one MDX change wasn't practical.
 
-The repo had a `tools/preview-mdx.mjs` script that renders a single `.mdx` file to standalone HTML without booting the full dev server. I used that to verify the section rendered correctly — prose, anchors, no MDX errors — before opening the PR.
+To work around this I built `tools/preview-mdx.mjs` — a script that renders a single `.mdx` file to standalone HTML without booting the full dev server. I used that to verify the section rendered correctly — prose, anchors, no MDX errors — before opening the PR.
 
 ## The PR
 
@@ -77,4 +77,4 @@ The change is live in the Hive documentation.
 
 - **Read the existing docs before writing new ones.** Each router already had its own docs page explaining the correct config — understanding those first made the implementation straightforward.
 - **The details matter.** Hive Router and Apollo Router look superficially similar but have completely different invocation patterns and even different image names. Getting one wrong would silently break users at runtime.
-- **Use the tools the project already has.** `preview-mdx.mjs` already existed — I just had to find it. Spending time reading the repo before writing anything is never wasted.
+- **Build the tools you need.** The dev server was too slow to use for iterating on a single MDX file, so I wrote `preview-mdx.mjs` to render it in isolation. Sometimes the right move is to make the feedback loop faster before doing the actual work.
