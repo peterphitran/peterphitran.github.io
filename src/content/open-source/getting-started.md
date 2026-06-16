@@ -1,51 +1,69 @@
 ---
 title: "My First Merged PR — GraphQL Hive Docs"
 date: "2026-06-15"
-excerpt: "How I found a documentation gap in GraphQL Hive, traced the correct configuration across the codebase, fixed broken links, and got my first PR merged into a real production open source project."
+excerpt: "How I found a documentation gap in GraphQL Hive, traced the correct configuration for three different routers across the codebase, and got my first PR merged into a real production open source project."
 ---
 
 ## The Project
 
 [GraphQL Hive](https://the-guild.dev/graphql/hive) is an open source schema registry and observability platform for GraphQL APIs, maintained by The Guild. It's a large, actively maintained project with a Bun + Turborepo monorepo and a Fumadocs-powered docs site deployed to Cloudflare.
 
-I started contributing here as I was interested in the project having used GraphQL and found this to be a great tool to learn more about and was also introduced through Codepath's A301 Open Source Capstone!
+I started contributing here through Codepath's A301 Open Source Capstone — I was already interested in GraphQL and Hive felt like a real project where my contributions would actually matter.
 
 ## The Issue
 
-Issue [`graphql-hive/console#6575`](https://github.com/graphql-hive/console/issues/6575) asked for documentation on how to serve a contract schema using **Hive Router** inside `contracts.mdx`. The existing section had a single sentence — "Point your Hive Gateway or Apollo Router instance to the supergraph of the contract schema:" — with no actual configuration for any of them. The PR would expand this into full subsections with Docker commands for all three routers: Hive Gateway, Hive Router, and Apollo Router.
+Issue [`graphql-hive/console#6575`](https://github.com/graphql-hive/console/issues/6575) asked for documentation on how to serve a contract schema using **Hive Router** inside `contracts.mdx`. The existing section had only a single sentence and an endpoint example — no actual Docker commands or configuration for any of the three supported routers:
 
-When I opened `contracts.mdx`, there was already an uncommitted draft in the working copy with a `### Hive Router` block added. At first glance, that seemed like the work was already done.
+```text
+Point your Hive Gateway or Apollo Router instance to the supergraph of the contract schema:
 
-It wasn't.
+https://cdn.graphql-hive.com/artifacts/v1/<target_id>/contracts/<contract_name>/supergraph
+```
 
-## The Problem With the Draft
+The task was to expand this into proper subsections with working configuration for **Hive Gateway**, **Hive Router**, and **Apollo Router**.
 
-The draft had the correct image (`ghcr.io/graphql-hive/router`) but the wrong invocation pattern — it used `--env HIVE_CDN_ENDPOINT` and `HIVE_CDN_KEY` environment variables, which is Apollo Router's approach (Apollo Router uses `ghcr.io/graphql-hive/apollo-router` with those env vars). Hive Router doesn't use env vars at all. It expects a `router.config.yaml` file mounted into the container.
+## Figuring Out the Correct Configuration
 
-To find the correct configuration I had to cross-reference two other pages in the docs: `router/supergraph.mdx` and `router/getting-started.mdx`. The real pattern uses a `router.config.yaml` file with `supergraph.source: hive`, an `endpoint` (the base artifact URL — no `/supergraph` suffix), and a `key`, started via:
+Each router has a different invocation pattern, and I had to read the existing docs carefully to get each one right.
+
+**Hive Gateway** was the most straightforward — the pattern was already used elsewhere in the docs:
 
 ```bash
-docker run ... \
+docker run --name hive-gateway --rm -p 4000:4000 \
+  ghcr.io/graphql-hive/gateway supergraph \
+  "https://cdn.graphql-hive.com/artifacts/v1/<target_id>/contracts/<contract_name>" \
+  --hive-cdn-key "<hive_cdn_access_key>"
+```
+
+**Hive Router** was the one the issue specifically called out as missing. It doesn't use environment variables — it expects a `router.config.yaml` mounted into the container:
+
+```yaml title="router.config.yaml"
+supergraph:
+  source: hive
+  endpoint: https://cdn.graphql-hive.com/artifacts/v1/<target_id>/contracts/<contract_name>
+  key: <hive_cdn_access_key>
+```
+
+```bash
+docker run --name hive-router --rm -p 4000:4000 \
   -v ./router.config.yaml:/app/router.config.yaml \
   ghcr.io/graphql-hive/router:latest
 ```
 
-I also had to verify the endpoint format. Hive Router, Hive Gateway, and Apollo Router all use slightly different URL conventions — wrong suffix = broken supergraph fetch at runtime.
+**Apollo Router** is a separate image entirely (`ghcr.io/graphql-hive/apollo-router`) and does use env vars — the opposite approach from Hive Router:
 
-## Broken Links
+```bash
+docker run --name apollo-router -p 4000:4000 --rm \
+  --env HIVE_CDN_ENDPOINT="https://cdn.graphql-hive.com/artifacts/v1/<target_id>/contracts/<contract_name>" \
+  --env HIVE_CDN_KEY="<hive_cdn_access_key>" \
+  ghcr.io/graphql-hive/apollo-router
+```
 
-After fixing the config, I noticed the "For more information" links at the bottom of the block were also wrong. They used absolute paths without the `/docs/` prefix, which the site's `remark-relative-links.ts` plugin doesn't rewrite — meaning they'd 404 in production.
-
-The correct links:
-- Hive Gateway → `/docs/gateway/supergraph-proxy-source` (not `/gateway/supergraph`, which doesn't exist)
-- Hive Router → `/docs/router/supergraph`
-- Apollo Router → `/docs/other-integrations/apollo-router`
-
-I cross-checked every link against the actual content files before committing.
+One detail I had to get right across all three: the endpoint uses the **base artifact URL** (`…/contracts/<contract_name>`) without a `/supergraph` suffix, even though the example endpoint at the top of the section shows the full `/supergraph` path. Wrong suffix = broken supergraph fetch at runtime.
 
 ## Validation Without a Dev Server
 
-One challenge with this codebase: the docs site is heavy. Mermaid diagrams are rendered at build time via Playwright Chromium, and the dev server on a Windows filesystem (`/mnt/c`) takes minutes to cold start. Running a full `bun dev` to check one MDX page wasn't practical.
+The docs site is heavy — Mermaid diagrams are rendered at build time via Playwright Chromium, and the dev server on a Windows filesystem (`/mnt/c`) can take minutes to cold start. Running a full `bun dev` to check one MDX change wasn't practical.
 
 The repo had a `tools/preview-mdx.mjs` script that renders a single `.mdx` file to standalone HTML without booting the full dev server. I used that to verify the section rendered correctly — prose, anchors, no MDX errors — before opening the PR.
 
@@ -57,7 +75,6 @@ The change is live in the Hive documentation.
 
 ## What I Took Away
 
-- **Read the whole section before touching it.** The existing draft looked complete but had a fundamental error. Auditing the surrounding context saved me from shipping something wrong.
-- **Cross-reference multiple sources.** The correct Hive Router config only made sense after reading three separate docs pages together.
-- **Links rot silently.** A path that looks right can 404 due to how the site's link rewriting works. Always verify against the actual file tree.
-- **Use the tools the project already has.** `preview-mdx.mjs` already existed — I just had to find it. Reading the repo before writing code is never wasted time.
+- **Read the existing docs before writing new ones.** Each router already had its own docs page explaining the correct config — understanding those first made the implementation straightforward.
+- **The details matter.** Hive Router and Apollo Router look superficially similar but have completely different invocation patterns and even different image names. Getting one wrong would silently break users at runtime.
+- **Use the tools the project already has.** `preview-mdx.mjs` already existed — I just had to find it. Spending time reading the repo before writing anything is never wasted.
