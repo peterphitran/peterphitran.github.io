@@ -8,19 +8,19 @@ excerpt: "How I found a documentation gap in GraphQL Hive, traced the correct co
 
 [GraphQL Hive](https://the-guild.dev/graphql/hive) is an open source schema registry and observability platform for GraphQL APIs, maintained by The Guild. It's a large, actively maintained project with a Bun + Turborepo monorepo and a Fumadocs-powered docs site deployed to Cloudflare.
 
-I started contributing here because I was already working inside the codebase and spotted a real gap in the documentation.
+I started contributing here as I was interested in the project having used GraphQL and found this to be a great tool to learn more about and was also introduced through Codepath's A301 Open Source Capstone!
 
 ## The Issue
 
-Issue [`graphql-hive/console#6575`](https://github.com/graphql-hive/console/issues/6575) asked for documentation on how to serve a contract schema using **Hive Router** — the project's own router — inside the existing "Serving a Contract Schema" section of `contracts.mdx`. The section already covered Apollo Router and Hive Gateway, but Hive Router was missing.
+Issue [`graphql-hive/console#6575`](https://github.com/graphql-hive/console/issues/6575) asked for documentation on how to serve a contract schema using **Hive Router** inside `contracts.mdx`. The existing section had a single sentence — "Point your Hive Gateway or Apollo Router instance to the supergraph of the contract schema:" — with no actual configuration for any of them. The PR would expand this into full subsections with Docker commands for all three routers: Hive Gateway, Hive Router, and Apollo Router.
 
-When I opened `contracts.mdx`, there was already an uncommitted draft waiting in the working copy with a `### Hive Router` block added. At first glance, that seemed like the work was already done.
+When I opened `contracts.mdx`, there was already an uncommitted draft in the working copy with a `### Hive Router` block added. At first glance, that seemed like the work was already done.
 
 It wasn't.
 
 ## The Problem With the Draft
 
-The draft had copied the Apollo Router pattern — using `--env HIVE_CDN_ENDPOINT` and `HIVE_CDN_KEY` environment variables and the `ghcr.io/graphql-hive/router` image. The problem: **Hive Router doesn't use those env vars**. Apollo Router does. This was a direct copy-paste from the wrong section.
+The draft had the correct image (`ghcr.io/graphql-hive/router`) but the wrong invocation pattern — it used `--env HIVE_CDN_ENDPOINT` and `HIVE_CDN_KEY` environment variables, which is Apollo Router's approach (Apollo Router uses `ghcr.io/graphql-hive/apollo-router` with those env vars). Hive Router doesn't use env vars at all. It expects a `router.config.yaml` file mounted into the container.
 
 To find the correct configuration I had to cross-reference two other pages in the docs: `router/supergraph.mdx` and `router/getting-started.mdx`. The real pattern uses a `router.config.yaml` file with `supergraph.source: hive`, an `endpoint` (the base artifact URL — no `/supergraph` suffix), and a `key`, started via:
 
