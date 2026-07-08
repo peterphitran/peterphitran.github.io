@@ -20,4 +20,15 @@ const openSource = defineCollection({
     }),
 });
 
-export const collections = { gallery, "open-source": openSource };
+const topics = defineCollection({
+    type: 'content',
+    schema: z.object({
+        title: z.string(),
+        summary: z.string(),
+        status: z.string().default('Exploring'),
+        updated: z.string().optional(),
+        tags: z.array(z.string()).default([]),
+    }),
+});
+
+export const collections = { gallery, "open-source": openSource, topics };

@@ -27,6 +27,9 @@ const moreItems = [
                 <li>
                     <a href="/open-source" class="hover:text-primary transition-colors duration-200 underline-offset-4 hover:underline">Open Source</a>
                 </li>
+                <li>
+                    <a href="/topics" class="hover:text-primary transition-colors duration-200 underline-offset-4 hover:underline">Topics</a>
+                </li>
                 <!-- More dropdown -->
                 <li class="relative">
                     <details id="more-dropdown" class="group/more">
@@ -59,6 +62,7 @@ const moreItems = [
                         <li><a href="/" class="hover:text-primary transition-colors duration-200">Home</a></li>
                         <li><a href="/gallery" class="hover:text-primary transition-colors duration-200">Gallery</a></li>
                         <li><a href="/open-source" class="hover:text-primary transition-colors duration-200">Open Source</a></li>
+                        <li><a href="/topics" class="hover:text-primary transition-colors duration-200">Topics</a></li>
                         <li class="pt-2 border-t border-border text-xs uppercase tracking-widest text-secondary/60">More</li>
                         {moreItems.map(({ path, name }) => (
                             <li>

@@ -1,0 +1,67 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageSEO from "@/components/PageSEO.astro";
+
+const allTopics = await getCollection("topics");
+const topics = allTopics.sort((a, b) => {
+    const da = a.data.updated ?? "";
+    const db = b.data.updated ?? "";
+    return db.localeCompare(da);
+});
+
+function formatDate(dateStr?: string) {
+    if (!dateStr) return null;
+    const [year, month, day] = dateStr.split("-").map(Number);
+    return new Date(year, month - 1, day).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
+}
+---
+
+<BaseLayout>
+    <PageSEO slot="head" title="Topics — Peter Tran" />
+
+    <main class="mx-auto max-w-4xl px-5 sm:px-6 py-16">
+        <p class="text-xs uppercase tracking-[0.15em] text-secondary mb-2 font-medium">Learning Journal</p>
+        <h1 class="text-3xl font-medium text-primary mb-4">Topics</h1>
+        <p class="text-sm text-secondary mb-10 max-w-2xl leading-relaxed">
+            Fields I'm actively digging into. Running notes, open questions, and resources as I learn,
+            kept as a living journal rather than polished essays.
+        </p>
+
+        {topics.length === 0 ? (
+            <p class="text-sm text-secondary">No topics yet.</p>
+        ) : (
+            <div class="divide-y divide-border">
+                {topics.map((topic) => (
+                    <article class="py-7">
+                        <a href={`/topics/${topic.id.replace(/\.md$/, "")}`} class="block group">
+                            <div class="flex flex-wrap items-center gap-3 mb-1">
+                                <h2 class="font-medium text-lg text-primary group-hover:text-accent transition-colors duration-200">
+                                    {topic.data.title}
+                                </h2>
+                                {topic.data.status && (
+                                    <span class="text-[10px] uppercase tracking-wider text-accent border border-accent/30 rounded-full px-2 py-0.5">
+                                        {topic.data.status}
+                                    </span>
+                                )}
+                            </div>
+                            <p class="text-sm text-secondary italic leading-relaxed mb-2">{topic.data.summary}</p>
+                            <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-secondary">
+                                {formatDate(topic.data.updated) && (
+                                    <span>Updated {formatDate(topic.data.updated)}</span>
+                                )}
+                                {topic.data.tags.length > 0 && (
+                                    <span>{topic.data.tags.join(" · ")}</span>
+                                )}
+                            </div>
+                        </a>
+                    </article>
+                ))}
+            </div>
+        )}
+    </main>
+</BaseLayout>
