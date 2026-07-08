@@ -28,4 +28,3 @@ Classical verification checks that a system behaves correctly by exercising it: 
 
 ## Notes
 
-- 2026-07-06: Starting by mapping the spectrum from plain tests to property-based testing to formal proof, and writing down exactly where coverage stops giving real guarantees.
