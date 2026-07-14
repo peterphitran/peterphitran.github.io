@@ -1,0 +1,74 @@
+---
+// topics.astro — a table of contents for what I'm learning, pulled from the
+// "topics" content collection (src/content/topics/).
+import Base from "../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const topics = (await getCollection("topics")).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title)
+);
+---
+
+<Base title="Topics" description="Notes and topics Peter Tran is learning and writing about.">
+  <h1 class="page-title">Topics</h1>
+  <p class="page-intro">
+    A running table of contents, my archive of learning and
+    occasional write ups.
+  </p>
+
+  <ol class="toc">
+    {topics.map((t) => (
+      <li>
+        <div class="toc-row">
+          <span class="toc-title">
+            <a href={`/topics/${t.slug}`}>{t.data.title}</a>
+          </span>
+          <span class="rule" aria-hidden="true"></span>
+          <span class="note status">{t.data.status.toLowerCase()}</span>
+        </div>
+        <p class="desc">{t.data.summary}</p>
+      </li>
+    ))}
+  </ol>
+</Base>
+
+<style>
+  .toc {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: toc;
+  }
+  .toc li {
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .toc li:first-child { padding-top: 0.25rem; }
+  .toc li:last-child { border-bottom: none; }
+
+  .toc-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+  }
+  .toc-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 500;
+  }
+  .rule {
+    flex: 1;
+    border-bottom: 1px solid var(--line);
+    transform: translateY(-4px);
+  }
+  .status {
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+  .desc {
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+    margin: 0.4rem 0 0;
+    max-width: 32rem;
+  }
+</style>

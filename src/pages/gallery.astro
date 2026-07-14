@@ -1,0 +1,71 @@
+---
+// gallery.astro — intentionally empty for now. The photos array is wired
+// up and ready: when you add entries, the empty state disappears and the
+// photo-book layout takes over automatically.
+import Base from "../layouts/Base.astro";
+
+type Photo = { src: string; alt: string; caption: string; size?: "full" | "half" };
+
+const photos: Photo[] = [
+  // Add photos like this when you're ready:
+  // { src: "/gallery/match-point.jpg", alt: "UTA club volleyball match point", caption: "match point, spring '26", size: "full" },
+];
+---
+
+<Base title="Gallery" description="Photos by Peter Tran." wide>
+  <h1 class="page-title">Gallery</h1>
+  <p class="page-intro">
+    Shots of whatever I point a camera at.
+  </p>
+
+  {photos.length === 0 ? (
+    <div class="empty">
+      <p class="note">film still developing check back soon</p>
+    </div>
+  ) : (
+    <div class="book">
+      {photos.map((p) => (
+        <figure class={p.size === "half" ? "plate half" : "plate"}>
+          <img src={p.src} alt={p.alt} loading="lazy" />
+          <figcaption class="note">{p.caption}</figcaption>
+        </figure>
+      ))}
+    </div>
+  )}
+</Base>
+
+<style>
+  .empty {
+    padding: 4rem 0 6rem;
+  }
+
+  .book {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.5rem 1.75rem;
+  }
+
+  .plate {
+    margin: 0;
+    grid-column: span 2;
+  }
+  .plate.half { grid-column: span 1; }
+
+  .plate img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .plate figcaption {
+    margin-top: 0.5rem;
+    text-align: right;
+    font-size: 1.1rem;
+    transform: rotate(-0.75deg);
+  }
+
+  @media (max-width: 600px) {
+    .book { grid-template-columns: 1fr; gap: 2.75rem; }
+    .plate, .plate.half { grid-column: span 1; }
+  }
+</style>

@@ -1,54 +1,231 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import ContactIcons from "@/components/landing/ContactIcons.astro";
-import ProfilePicture from "@/components/landing/ProfilePicture.astro";
-import PageSEO from "@/components/PageSEO.astro";
-import AboutMe from "@/components/landing/AboutMe.astro";
-import ExperiencesSection from "@/components/landing/ExperiencesSection.astro";
-import ProjectsSection from "@/components/landing/ProjectsSection.astro";
-import VolunteerSection from "@/components/landing/VolunteerSection.astro";
-import CourseworkSection from "@/components/landing/CourseworkSection.astro";
-import CertificatesSection from "@/components/landing/CertificatesSection.astro";
-import SkillsSection from "@/components/landing/SkillsSection.astro";
+// index.astro — homepage. Editorial layout with a marginalia system:
+// sepia pen for annotations, madder red for the editor's marks (max 2/page),
+// asterisms between sections, one drop cap.
+import Base from "../layouts/Base.astro";
 
-const headingStyle = 
-    "text-xl font-bold uppercase tracking-[0.12em] text-primary mb-6";
+const projects = [
+  {
+    name: "Plant-Pal",
+    descHtml: `A Tamagotchi for my houseplant. An ESP32 reads soil moisture and humidity, gpt-oss-20b decides how the plant feels, and Discord tells me when it's mad at me.<a class="fn-ref" id="fnref1" href="#fn1">1</a> Built for OpenAI's Open Model Hackathon.`,
+    links: [
+      { label: "Code", href: "https://github.com/Peter-Phi-Tran/Plant-Pal" },
+      { label: "Devpost", href: "https://devpost.com/software/ai-caramba" },
+    ],
+    annotation: "loll",
+  },
+  {
+    name: "Serapis",
+    desc: "A patient-management backend I built to properly learn Spring Boot — auth, analytics, gRPC, Kafka — each service in its own container, with the AWS side simulated on LocalStack via CDK.",
+    links: [],
+  },
+  {
+    name: "Tachyon",
+    desc: "Built at HackTX: a three-agent interview that turns car financing trade-offs into a 3D constellation you can explore, instead of a spreadsheet you dread.",
+    links: [{ label: "Devpost", href: "https://devpost.com/software/tachyon-ruiz5h" }],
+  },
+  {
+    name: "Stratify",
+    desc: "A real-time paper-trading app on the MERN stack — live market data over Finnhub websockets, JWT auth, rate limiting, the whole checklist.",
+    links: [{ label: "Live", href: "https://stratify-glte.onrender.com/" }],
+  },
+];
+
+const work = [
+  {
+    when: "Summer 2026",
+    org: "JPMorgan Chase",
+    desc: "Incoming software engineering intern through the SEP program.",
+  },
+  {
+    when: "Summer 2026",
+    org: "DIAL Labs, UT Arlington",
+    desc: "Research apprenticeship under Dr. Shomer through the UR2PhD program — one of two undergrads picked for the cohort.",
+  },
+  {
+    when: "2025 – 2026",
+    org: "Beautisol",
+    // set:html so the pen circle can wrap the number that matters
+    descHtml: `Shipped the over-the-air firmware pipeline for their IoT devices on Azure. Onboarding a device went from a manual chore to <span class="circle-ink">under thirty seconds</span>, with fail-safe rollback when firmware goes bad. Also built the load tests and the CI/CD that ships the web app.`,
+  },
+  {
+    when: "2022 – 2023",
+    org: "MISD Technology",
+    desc: "IT intern for my school district — 48 schools, 35,000 students, and a great many laptops.",
+  },
+];
 ---
 
-<BaseLayout>
-     <PageSEO slot="head" title="Peter Tran" />
+<Base title="Home">
+  <section class="hero has-margin">
+    <h1>
+      I like building and solving problems from AI, to distributed systems,
+      and even to one very opinionated <span class="underline-ink">houseplant</span>.
+    </h1>
 
-     <main class="mx-auto max-w-4xl px-5 sm:px-6">
+    <p class="page-intro" style="margin-bottom: 0.5rem;">
+      CS and minor in Mathematics at UT Arlington, class of '27. This summer I'm a software
+      engineering intern at JPMorgan Chase 
+      and doing undergrad research in DIAL Labs.
+    </p>
 
-            <div class="mt-10 lg:mt-14 mb-2 flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-12">
-                <!-- Profile picture -->
-                <div class="box-content flex size-28 sm:size-32 flex-none">
-                    <ProfilePicture />
-                </div>
+    <p class="note note--margin">yes, the plant has a Discord account, mostly to tell me he's thirsty</p>
+  </section>
 
-                <div class="font-sans flex-1 text-center sm:text-left">
-                    <p class="text-xs uppercase tracking-[0.15em] text-secondary mb-2 font-medium">Portfolio</p>
-                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-medium text-primary">Peter Tran</h1>
-                    <div class="mt-5 flex justify-center sm:justify-start">
-                        <ContactIcons />
-                    </div>
-                </div>
+  <div class="asterism" aria-hidden="true">⁂</div>
 
-                <!-- About Me on desktop -->
-                <div class="hidden lg:flex lg:items-center lg:ml-auto">
-                    <AboutMe />
-                </div>
-            </div>
+  <section id="projects" class="section">
+    <div class="section-head"><h2>A few things I've made</h2></div>
 
-            <!-- About Me on mobile -->
-            <div class="lg:hidden mt-8">
-                <AboutMe />
-            </div>
-     </main>
-    <ExperiencesSection {headingStyle}/>
-    <ProjectsSection {headingStyle}/>
-    <VolunteerSection {headingStyle}/>
-    <CourseworkSection {headingStyle}/>
-    <CertificatesSection {headingStyle}/>
-    <SkillsSection {headingStyle}/>
-</BaseLayout>
+    <ol class="project-list">
+      {projects.map((p) => (
+        <li>
+          <div class="project-head">
+            <h3>{p.name}</h3>
+            {p.annotation && <span class="note note--red">{p.annotation}</span>}
+          </div>
+          {p.descHtml
+            ? <p class="desc" set:html={p.descHtml} />
+            : <p class="desc">{p.desc}</p>}
+          {p.links.length > 0 && (
+            <p class="project-links">
+              {p.links.map((l) => (
+                <a href={l.href}>{l.label}</a>
+              ))}
+            </p>
+          )}
+        </li>
+      ))}
+    </ol>
+
+    <p class="aside">
+      More in <a href="https://github.com/peterphitran">the archive</a> —
+      <span class="wash">three or four new ones in progress</span>.
+    </p>
+  </section>
+
+  <div class="asterism" aria-hidden="true">⁂</div>
+
+  <section id="experience" class="section">
+    <div class="section-head"><h2>Where I've worked</h2></div>
+
+    <ol class="work-list">
+      {work.map((w) => (
+        <li>
+          <span class="meta">{w.when}</span>
+          <div>
+            <h3>{w.org}</h3>
+            {w.descHtml
+              ? <p class="desc" set:html={w.descHtml} />
+              : <p class="desc">{w.desc}</p>}
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <div class="asterism" aria-hidden="true">⁂</div>
+
+  <section id="campus" class="section">
+    <div class="section-head"><h2>Around campus</h2></div>
+    <p class="dropcap">
+      When I'm not shipping code I'm usually out leading AWS Student Builders
+      workshops, working on SASE Research, Adobe Ambassadoring, or doing my
+      own thing like running or photography which you can find some of those
+      in the <a href="/gallery">gallery</a>.
+    </p>
+    <p class="desc" style="margin-top: 0.75rem;">
+      My most used tools recently: Python, TypeScript, FastAPI, React, Docker, AWS &amp; Azure, NodeJS.
+    </p>
+  </section>
+
+  <div class="footnotes">
+    <ol>
+      <li id="fn1">
+        <span class="fn-num">1</span>he is often mad at me
+        <a href="#fnref1" aria-label="Back to reference 1">&#8617;</a>
+      </li>
+    </ol>
+  </div>
+</Base>
+
+<style>
+  .hero h1 {
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    font-weight: 400;
+    margin: 0 0 1.25rem;
+  }
+
+  /* single confident pen stroke under one word */
+  .underline-ink {
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='6' viewBox='0 0 120 6'%3E%3Cpath d='M2 4.5 C 30 2, 60 1.5, 118 3.5' fill='none' stroke='%237d5a34' stroke-width='2' stroke-linecap='round' opacity='0.75'/%3E%3C/svg%3E")
+      bottom left / 100% 0.28em no-repeat;
+    padding-bottom: 0.2em;
+  }
+
+  .project-list, .work-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .project-list li {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .project-list li:first-child { padding-top: 0.25rem; }
+  .project-list li:last-child { border-bottom: none; }
+
+  .project-head {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .project-head h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .desc {
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+    margin: 0.5rem 0 0;
+    max-width: 36rem;
+  }
+
+  .project-links {
+    display: flex;
+    gap: 1.25rem;
+    margin: 0.6rem 0 0;
+    font-family: var(--font-utility);
+    font-size: 0.82rem;
+    letter-spacing: 0.02em;
+  }
+
+  .aside {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+
+  .work-list li {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 1.25rem;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .work-list li:first-child { padding-top: 0.25rem; }
+  .work-list li:last-child { border-bottom: none; }
+  .work-list .meta { padding-top: 0.45em; }
+  .work-list h3 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  @media (max-width: 540px) {
+    .work-list li { grid-template-columns: 1fr; gap: 0.2rem; }
+  }
+</style>

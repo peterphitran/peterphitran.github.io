@@ -1,17 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 
-const gallery = defineCollection({
-    type: 'data',
-    schema: z.object({
-        title: z.string(),
-        description: z.string().optional(),
-        date: z.string(),
-        cover: z.string().optional(),
-        photos: z.array(z.string()).default([]),
-    }),
-});
-
-const openSource = defineCollection({
+const blog = defineCollection({
     type: 'content',
     schema: z.object({
         title: z.string(),
@@ -31,4 +20,4 @@ const topics = defineCollection({
     }),
 });
 
-export const collections = { gallery, "open-source": openSource, topics };
+export const collections = { blog, topics };

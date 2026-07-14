@@ -4,7 +4,7 @@
    Imported once by src/layouts/Base.astro
    ------------------------------------------------------------------ */
 
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Homemade+Apple&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Caveat:wght@500;600&display=swap");
 
 :root {
   /* paper + ink */
@@ -21,7 +21,7 @@
   /* type */
   --font-display: "Fraunces", Georgia, serif;
   --font-body: "Newsreader", Georgia, serif;
-  --font-hand: "Homemade Apple", cursive;
+  --font-hand: "Caveat", cursive;
   --font-utility: "Karla", system-ui, sans-serif;
 }
 
@@ -90,10 +90,10 @@ a:focus-visible, button:focus-visible {
    One per section, maximum. */
 .note {
   font-family: var(--font-hand);
-  font-size: 0.95rem;
+  font-size: 1.2rem;
   color: var(--pen);
   display: inline-block;
-  line-height: 2;
+  line-height: 1.5;
   transform: rotate(-1deg);
 }
 
@@ -178,7 +178,7 @@ a:focus-visible, button:focus-visible {
 }
 .signature {
   font-family: var(--font-hand);
-  font-size: 1.5rem;
+  font-size: 1.7rem;
   color: var(--pen);
   transform: rotate(-2deg);
   display: inline-block;
@@ -199,3 +199,110 @@ a:focus-visible, button:focus-visible {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+
+/* ---------- accent vocabulary: marginalia system ---------- */
+
+/* second ink: editor's red. Use at most twice per page. */
+:root { --madder: #96432e; }
+@media (prefers-color-scheme: dark) {
+  :root { --madder: #cd7f66; }
+}
+.note--red { color: var(--madder); }
+
+/* true margin note: sits in the book's margin on wide screens.
+   Wrap the annotated block in .has-margin. Falls back inline on mobile. */
+.has-margin { position: relative; }
+@media (min-width: 1060px) {
+  .note--margin {
+    position: absolute;
+    left: -190px;
+    top: 0.4em;
+    width: 160px;
+    text-align: right;
+    line-height: 1.4;
+  }
+}
+
+/* pen circle around a phrase — the mark for "this number matters" */
+.circle-ink {
+  padding: 0.08em 0.4em;
+  margin: 0 -0.15em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='44' viewBox='0 0 160 44' preserveAspectRatio='none'%3E%3Cpath d='M28 6 C 70 1, 140 3, 150 16 C 158 28, 130 40, 76 40 C 30 40, 6 34, 6 22 C 6 12, 22 7, 60 5' fill='none' stroke='%2396432e' stroke-width='2' stroke-linecap='round' opacity='0.8'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+@media (prefers-color-scheme: dark) {
+  .circle-ink {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='44' viewBox='0 0 160 44' preserveAspectRatio='none'%3E%3Cpath d='M28 6 C 70 1, 140 3, 150 16 C 158 28, 130 40, 76 40 C 30 40, 6 34, 6 22 C 6 12, 22 7, 60 5' fill='none' stroke='%23cd7f66' stroke-width='2' stroke-linecap='round' opacity='0.8'/%3E%3C/svg%3E");
+  }
+}
+
+/* asterism: the classic section divider of a well-set book */
+.asterism {
+  text-align: center;
+  color: var(--pen);
+  font-size: 1rem;
+  letter-spacing: 0.6em;
+  margin: 4.5rem 0 0;
+  user-select: none;
+}
+.asterism + .section { margin-top: 4.5rem; }
+
+/* drop cap: opens one paragraph per page, maximum */
+.dropcap::first-letter {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 3.1em;
+  float: left;
+  line-height: 0.8;
+  padding: 0.08em 0.12em 0 0;
+  color: var(--pen);
+}
+
+/* ---------- third ink: moss — growth & the author's own asides ---------- */
+:root { --moss: #5f7040; }
+@media (prefers-color-scheme: dark) {
+  :root { --moss: #9cb173; }
+}
+.note--moss { color: var(--moss); }
+
+/* ink wash: a soft moss tint behind a phrase about something growing.
+   Uneven corners keep it feeling brushed on, not highlighted. */
+.wash {
+  background: color-mix(in srgb, var(--moss) 16%, transparent);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0.05em 0.3em;
+  border-radius: 0.5em 0.3em 0.6em 0.25em;
+}
+
+/* handwritten footnotes — the author leaning in to whisper something */
+.fn-ref {
+  font-family: var(--font-hand);
+  font-size: 0.9em;
+  color: var(--moss);
+  text-decoration: none;
+  vertical-align: super;
+  line-height: 0;
+  padding-left: 0.12em;
+}
+.fn-ref:hover { color: var(--moss); text-decoration: underline; }
+
+.footnotes { margin-top: 5rem; }
+.footnotes ol { list-style: none; margin: 0; padding: 0; }
+.footnotes li {
+  font-family: var(--font-hand);
+  font-size: 1.15rem;
+  color: var(--moss);
+  line-height: 1.7;
+  transform: rotate(-0.5deg);
+}
+.footnotes .fn-num { padding-right: 0.45em; }
+.footnotes a { color: var(--moss); text-decoration-color: color-mix(in srgb, var(--moss) 40%, transparent); }
+
+/* leaf sprig: the end-of-page mark. Inherits currentColor. */
+.sprig {
+  text-align: center;
+  margin: 5rem 0 0;
+  color: var(--moss);
+}
+.sprig svg { width: 32px; height: auto; }

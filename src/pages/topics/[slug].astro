@@ -1,0 +1,124 @@
+---
+// topics/[slug].astro — a single learning-journal note, field-notebook style.
+import Base from "../../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const topics = await getCollection("topics");
+  return topics.map((topic) => ({ params: { slug: topic.slug }, props: { topic } }));
+}
+
+const { topic } = Astro.props;
+const { Content } = await topic.render();
+---
+
+<Base title={topic.data.title} description={topic.data.summary}>
+  <p class="back"><a href="/topics">&#8592; back to topics</a></p>
+  <article class="post">
+    <h1 class="page-title">{topic.data.title}</h1>
+    <p class="summary">{topic.data.summary}</p>
+    <div class="tags">
+      <span class="status note">{topic.data.status.toLowerCase()}</span>
+      {topic.data.tags.map((tag) => <span class="tag">{tag}</span>)}
+    </div>
+    <div class="body">
+      <Content />
+    </div>
+  </article>
+</Base>
+
+<style>
+  .back { margin: 0 0 1.75rem; }
+  .back a {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+  .back a:hover { color: var(--moss-deep); }
+
+  .post .page-title { margin-bottom: 0.5rem; }
+  .summary {
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    margin: 0 0 1rem;
+    max-width: 34rem;
+  }
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0 0 2.4rem;
+  }
+  .status { font-size: 1.1rem; transform: rotate(-1deg); }
+  .tags .tag {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    background: var(--paper-raised);
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    padding: 0.15rem 0.7rem;
+  }
+
+  /* markdown body */
+  .body :global(h2) { font-size: 1.4rem; margin: 2.4rem 0 0.8rem; }
+  .body :global(h3) { font-size: 1.12rem; margin: 1.9rem 0 0.6rem; }
+  .body :global(p) { margin: 0 0 1.15rem; }
+  .body :global(ul),
+  .body :global(ol) { margin: 0 0 1.2rem; padding-left: 1.5rem; }
+  .body :global(li) { margin: 0.35rem 0; }
+  .body :global(a) { font-weight: 600; }
+  .body :global(blockquote) {
+    border-left: 3px solid var(--honey);
+    margin: 0 0 1.3rem;
+    padding: 0.3rem 0 0.3rem 1.1rem;
+    color: var(--ink-soft);
+    font-style: italic;
+  }
+  .body :global(code) {
+    font-family: ui-monospace, "SFMono-Regular", "Cascadia Code", monospace;
+    font-size: 0.86em;
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    padding: 0.12em 0.38em;
+    border-radius: 5px;
+  }
+  .body :global(pre) {
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    padding: 1rem 1.15rem;
+    overflow-x: auto;
+    margin: 0 0 1.4rem;
+    line-height: 1.5;
+  }
+  .body :global(pre code) {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 0.85rem;
+  }
+  .body :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 1.5px solid var(--line);
+  }
+  .body :global(hr) {
+    border: none;
+    border-top: 1.5px dashed var(--line);
+    margin: 2.2rem 0;
+  }
+  .body :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 1.4rem;
+    font-size: 0.92rem;
+  }
+  .body :global(th),
+  .body :global(td) {
+    border: 1.5px solid var(--line);
+    padding: 0.5rem 0.7rem;
+    text-align: left;
+  }
+</style>

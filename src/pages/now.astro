@@ -1,0 +1,43 @@
+---
+// now.astro — what you're up to right now. Update every month or two;
+// the handwritten date at the bottom does the honesty.
+import Base from "../layouts/Base.astro";
+---
+
+<Base title="Now" description="What Peter Tran is doing right now.">
+  <h1 class="page-title">Now</h1>
+  <p class="page-intro">What I'm up to at the moment, in no particular order.</p>
+
+  <ul class="now-list">
+    <li>Interning at JPMorgan Chase for the summer, through the SEP program.</li>
+    <li>Doing undergrad research in DIAL Labs under Dr. Shomer for my first taste of the PhD track.</li>
+    <li>Three or four new projects in progress; the plant supervises.</li>
+    <li>Planning and researching for SASE RIG.</li>
+    <li>
+      <!-- TODO: add one non-tech thing — a book, a game, a volleyball goal.
+           This line does more for "not AI generated" than any CSS. -->
+      Bouncing volleyballs 10ft and training for BMW Marathon 2026.
+    </li>
+  </ul>
+
+  <p class="note" style="margin-top: 2.5rem;">last updated july 2026</p>
+</Base>
+
+<style>
+  .now-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 34rem;
+  }
+  .now-list li {
+    position: relative;
+    padding: 0.55rem 0 0.55rem 1.7rem;
+  }
+  .now-list li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--pen);
+  }
+</style>

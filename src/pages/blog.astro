@@ -1,0 +1,68 @@
+---
+// blog.astro — a quiet ledger of writing, pulled from the
+// "blog" content collection (src/content/blog/).
+import Base from "../layouts/Base.astro";
+import { getCollection } from "astro:content";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
+);
+---
+
+<Base title="Blog" description="Peter Tran's writing on software, projects, and open source.">
+  <h1 class="page-title">Blog</h1>
+  <p class="page-intro">
+    Notes from the jungle of software: what I'm building, what broke, and what
+    I learned along the way.
+  </p>
+
+  <ol class="ledger">
+    {posts.map((post) => (
+      <li>
+        <span class="meta">{new Date(post.data.date).getUTCFullYear()}</span>
+        <div>
+          <h2><a href={`/blog/${post.slug}`}>{post.data.title}</a></h2>
+          <p class="desc">{post.data.excerpt}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  <p class="note" style="margin-top: 2.5rem;">more soon hunting for my next blocker to tackle</p>
+</Base>
+
+<style>
+  .ledger {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .ledger li {
+    display: grid;
+    grid-template-columns: 70px 1fr;
+    gap: 1.25rem;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .ledger li:first-child { padding-top: 0.25rem; }
+  .ledger li:last-child { border-bottom: none; }
+  .ledger .meta { padding-top: 0.5em; }
+
+  .ledger h2 {
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin: 0;
+    font-family: var(--font-utility);
+    letter-spacing: 0.01em;
+  }
+  .desc {
+    font-size: 0.98rem;
+    color: var(--ink-soft);
+    margin: 0.4rem 0 0;
+    max-width: 34rem;
+  }
+
+  @media (max-width: 540px) {
+    .ledger li { grid-template-columns: 1fr; gap: 0.2rem; }
+  }
+</style>

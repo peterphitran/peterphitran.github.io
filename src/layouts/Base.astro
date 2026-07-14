@@ -1,24 +1,62 @@
 ---
-import Footer from "../components/Footer.astro"
-import Header from "../components/Header.astro" 
-import "@/styles/global.css";
-import "@fontsource-variable/raleway";
+// Base.astro — shared shell for every page.
+import "../styles/theme.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  wide?: boolean;
+}
+
+const {
+  title,
+  description = "Peter Tran — CS student at UT Arlington building software that survives the real world.",
+  wide = false,
+} = Astro.props;
+
+const path = Astro.url.pathname;
+const current = (href: string) =>
+  path === href || (href !== "/" && path.startsWith(href)) ? "page" : undefined;
 ---
 
-<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width" />
-        <meta name="generator" content={Astro.generator} />
-        <slot name ="head" />
-    </head>
-    <body class="flex min-h-dvh flex-col">
-        <Header />
-        <div class="grow">
-            <slot />
-        </div>
-        <Footer />
-    </body>
-</html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title === "Home" ? "Peter Tran" : `${title} · Peter Tran`}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content="Peter Tran" />
+    <meta property="og:description" content={description} />
+    <!-- TODO: replace with a real social image in /public -->
+    <meta property="og:image" content="/og.png" />
+  </head>
 
+  <body>
+    <div class={wide ? "page page--wide" : "page"}>
+      <header class="site-header">
+        <a class="wordmark" href="/">Peter Tran</a>
+        <nav>
+          <a href="/now" aria-current={current("/now")}>Now</a>
+          <a href="/gallery" aria-current={current("/gallery")}>Gallery</a>
+          <a href="/blog" aria-current={current("/blog")}>Blog</a>
+          <a href="/topics" aria-current={current("/topics")}>Topics</a>
+        </nav>
+      </header>
+
+      <main>
+        <slot />
+      </main>
+      <footer class="site-footer">
+        <p class="signature">— peter</p>
+        <p style="margin: 0 0 1.25rem; font-size: 0.95rem;">
+          <a href="mailto:ptran.tech@outlook.com">ptran.tech@outlook.com</a>
+          <span aria-hidden="true"> · </span>
+          <a href="https://github.com/peterphitran">GitHub</a>
+          <span aria-hidden="true"> · </span>
+          <a href="https://www.linkedin.com/in/peter-phi-tran/">LinkedIn</a>
+        </p>
+        <p class="fine">© 2026 Peter Tran · set in Fraunces and Newsreader, annotated by hand</p>
+      </footer>
+    </div>
+  </body>
+</html>
