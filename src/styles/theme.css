@@ -1,0 +1,201 @@
+/* ------------------------------------------------------------------
+   theme.css — "ink & paper" theme, v2
+   Flat warm paper, editorial hairlines, fountain-pen annotations.
+   Imported once by src/layouts/Base.astro
+   ------------------------------------------------------------------ */
+
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Homemade+Apple&display=swap");
+
+:root {
+  /* paper + ink */
+  --paper: #faf6ee;        /* flat warm paper — no texture */
+  --ink: #2e2a23;          /* warm near-black, like dried ink */
+  --ink-soft: #6b6355;     /* secondary text */
+  --ink-faint: #a49a87;    /* metadata, dates */
+  --line: #e6ddcc;         /* hairline rules */
+
+  /* one accent: sepia ink, the color of pen annotations */
+  --pen: #7d5a34;
+  --pen-strong: #5c401f;
+
+  /* type */
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Newsreader", Georgia, serif;
+  --font-hand: "Homemade Apple", cursive;
+  --font-utility: "Karla", system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #201d17;
+    --ink: #e9e2d3;
+    --ink-soft: #b0a691;
+    --ink-faint: #7d7462;
+    --line: #38332a;
+    --pen: #c49a63;
+    --pen-strong: #d9b47f;
+  }
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.25;
+  color: var(--ink);
+}
+
+a {
+  color: var(--pen);
+  text-decoration-color: color-mix(in srgb, var(--pen) 40%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  transition: color 120ms ease, text-decoration-color 120ms ease;
+}
+a:hover {
+  color: var(--pen-strong);
+  text-decoration-color: var(--pen-strong);
+}
+
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--pen);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::selection { background: color-mix(in srgb, var(--pen) 22%, transparent); }
+
+/* ---------- shared building blocks ---------- */
+
+.page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 2.5rem 1.4rem 4rem;
+}
+.page--wide { max-width: 880px; }
+
+/* handwritten ink annotation — small, rare, delicate.
+   One per section, maximum. */
+.note {
+  font-family: var(--font-hand);
+  font-size: 0.95rem;
+  color: var(--pen);
+  display: inline-block;
+  line-height: 2;
+  transform: rotate(-1deg);
+}
+
+.section { margin-top: 5rem; }
+
+/* section headings: small caps eyebrow + hairline, editorial not boxy */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.75rem;
+}
+.section-head h2 {
+  font-size: 1.35rem;
+  font-style: italic;
+  font-weight: 400;
+  margin: 0;
+  white-space: nowrap;
+}
+.section-head::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid var(--line);
+  transform: translateY(-4px);
+}
+
+.page-title {
+  font-size: clamp(1.8rem, 5vw, 2.3rem);
+  font-style: italic;
+  font-weight: 400;
+  margin: 0 0 0.75rem;
+}
+.page-intro {
+  color: var(--ink-soft);
+  max-width: 34rem;
+  margin: 0 0 3rem;
+}
+
+/* dates & metadata: small caps in the utility sans */
+.meta {
+  font-family: var(--font-utility);
+  font-size: 0.75rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+/* header + footer (rendered by Base.astro) */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 5rem;
+}
+.wordmark {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+.site-header nav {
+  display: flex;
+  gap: 1.4rem;
+  font-family: var(--font-utility);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+.site-header nav a { color: var(--ink-soft); text-decoration: none; }
+.site-header nav a:hover { color: var(--pen-strong); }
+.site-header nav a[aria-current="page"] {
+  color: var(--ink);
+  border-bottom: 1px solid var(--pen);
+  padding-bottom: 2px;
+}
+
+.site-footer {
+  margin-top: 6rem;
+  border-top: 1px solid var(--line);
+  padding-top: 2.25rem;
+}
+.signature {
+  font-family: var(--font-hand);
+  font-size: 1.5rem;
+  color: var(--pen);
+  transform: rotate(-2deg);
+  display: inline-block;
+  margin: 0 0 1rem;
+}
+.site-footer .fine {
+  font-family: var(--font-utility);
+  font-size: 0.78rem;
+  color: var(--ink-faint);
+  margin: 0.3rem 0 0;
+}
+
+@media (max-width: 480px) {
+  .site-header { flex-direction: column; gap: 0.5rem; margin-bottom: 3.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
