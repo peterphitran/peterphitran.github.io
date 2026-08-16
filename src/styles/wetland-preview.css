@@ -1,4 +1,5 @@
 :root {
+  color-scheme: dark;
   --lagoon-950: #082f31;
   --lagoon-800: #0c4a49;
   --lagoon-700: #155f5b;
@@ -18,14 +19,14 @@
 }
 
 html {
+  background-color: #082f31;
   scroll-behavior: smooth;
-  background: var(--lagoon-950);
 }
 
 body {
   min-height: 100dvh;
   margin: 0;
-  background: var(--paper);
+  background-color: #082f31;
   color: var(--ink);
   font-family: var(--utility);
   font-size: 16px;
