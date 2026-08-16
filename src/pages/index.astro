@@ -1,231 +1,324 @@
 ---
-// index.astro — homepage. Editorial layout with a marginalia system:
-// sepia pen for annotations, madder red for the editor's marks (max 2/page),
-// asterisms between sections, one drop cap.
-import Base from "../layouts/Base.astro";
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import { Icon } from "astro-icon/components";
+import SiteNav from "../components/SiteNav.astro";
+import matterhornImage from "../assets/matterhorn-hero-v1.png";
+import "@fontsource-variable/lora";
+import "@fontsource-variable/lora/wght-italic.css";
+import "@fontsource-variable/raleway";
+import "../styles/wetland-preview.css";
+import "../styles/scrollbar.css";
 
-const projects = [
-  {
-    name: "Plant-Pal",
-    descHtml: `A Tamagotchi for my houseplant. An ESP32 reads soil moisture and humidity, gpt-oss-20b decides how the plant feels, and Discord tells me when it's mad at me.<a class="fn-ref" id="fnref1" href="#fn1">1</a> Built for OpenAI's Open Model Hackathon.`,
-    links: [
-      { label: "Code", href: "https://github.com/Peter-Phi-Tran/Plant-Pal" },
-      { label: "Devpost", href: "https://devpost.com/software/ai-caramba" },
-    ],
-    annotation: "loll",
-  },
-  {
-    name: "Serapis",
-    desc: "A patient-management backend I built to properly learn Spring Boot — auth, analytics, gRPC, Kafka — each service in its own container, with the AWS side simulated on LocalStack via CDK.",
-    links: [],
-  },
-  {
-    name: "Tachyon",
-    desc: "Built at HackTX: a three-agent interview that turns car financing trade-offs into a 3D constellation you can explore, instead of a spreadsheet you dread.",
-    links: [{ label: "Devpost", href: "https://devpost.com/software/tachyon-ruiz5h" }],
-  },
-  {
-    name: "Stratify",
-    desc: "A real-time paper-trading app on the MERN stack — live market data over Finnhub websockets, JWT auth, rate limiting, the whole checklist.",
-    links: [{ label: "Live", href: "https://stratify-glte.onrender.com/" }],
-  },
-];
+const posts = (await getCollection("blog"))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+  .slice(0, 3);
 
-const work = [
-  {
-    when: "Summer 2026",
-    org: "JPMorgan Chase",
-    desc: "Incoming software engineering intern through the SEP program.",
-  },
-  {
-    when: "Summer 2026",
-    org: "DIAL Labs, UT Arlington",
-    desc: "Research apprenticeship under Dr. Shomer through the UR2PhD program — one of two undergrads picked for the cohort.",
-  },
-  {
-    when: "2025 – 2026",
-    org: "Beautisol",
-    // set:html so the pen circle can wrap the number that matters
-    descHtml: `Shipped the over-the-air firmware pipeline for their IoT devices on Azure. Onboarding a device went from a manual chore to <span class="circle-ink">under thirty seconds</span>, with fail-safe rollback when firmware goes bad. Also built the load tests and the CI/CD that ships the web app.`,
-  },
-  {
-    when: "2022 – 2023",
-    org: "MISD Technology",
-    desc: "IT intern for my school district — 48 schools, 35,000 students, and a great many laptops.",
-  },
-];
+const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin).toString();
 ---
 
-<Base title="Home">
-  <section class="hero has-margin">
-    <h1>
-      I like building and solving problems from AI, to distributed systems,
-      and even to one very opinionated <span class="underline-ink">houseplant</span>.
-    </h1>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0c4a49" />
+    <meta
+      name="description"
+      content="Peter Tran is a software engineer and researcher building thoughtful systems across AI, infrastructure, and product engineering."
+    />
+    <meta property="og:title" content="Peter Tran" />
+    <meta
+      property="og:description"
+      content="Software engineer and researcher building thoughtful systems across AI, infrastructure, and product engineering."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content={socialImage} />
+    <title>Peter Tran · Software engineer and researcher</title>
+    <script is:inline>
+      document.documentElement.classList.add("js");
+      window.__portfolioRevealFallback = window.setTimeout(() => {
+        document.documentElement.classList.add("reveal-fallback");
+      }, 2500);
+    </script>
+  </head>
 
-    <p class="page-intro" style="margin-bottom: 0.5rem;">
-      CS and minor in Mathematics at UT Arlington, class of '27. This summer I'm a software
-      engineering intern at JPMorgan Chase 
-      and doing undergrad research in DIAL Labs.
-    </p>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
 
-    <p class="note note--margin">yes, the plant has a Discord account, mostly to tell me he's thirsty</p>
-  </section>
+    <header class="hero" aria-labelledby="hero-title">
+      <Image
+        class="hero__art"
+        src={matterhornImage}
+        alt=""
+        aria-hidden="true"
+        loading="eager"
+        decoding="sync"
+        fetchpriority="high"
+        widths={[768, 1200, 1672]}
+        sizes="100vw"
+        quality={88}
+      />
+      <div class="hero__veil" aria-hidden="true"></div>
 
-  <div class="asterism" aria-hidden="true">⁂</div>
+      <SiteNav overlay />
 
-  <section id="projects" class="section">
-    <div class="section-head"><h2>A few things I've made</h2></div>
+      <div class="hero__content shell">
+        <p class="eyebrow eyebrow--light reveal">Software engineer · Researcher</p>
+        <h1 id="hero-title" class="reveal reveal--delay-1">
+          I build software for systems with <em>a lot going on.</em>
+        </h1>
+        <p class="hero__lede reveal reveal--delay-2">
+          From AI and distributed infrastructure to one very opinionated
+          houseplant, I like turning complicated systems into things people can
+          understand and trust.
+        </p>
+        <p class="hero__meta reveal reveal--delay-3">
+          Computer Science · Mathematics minor · UT Arlington · Class of ’27
+        </p>
+      </div>
 
-    <ol class="project-list">
-      {projects.map((p) => (
-        <li>
-          <div class="project-head">
-            <h3>{p.name}</h3>
-            {p.annotation && <span class="note note--red">{p.annotation}</span>}
-          </div>
-          {p.descHtml
-            ? <p class="desc" set:html={p.descHtml} />
-            : <p class="desc">{p.desc}</p>}
-          {p.links.length > 0 && (
-            <p class="project-links">
-              {p.links.map((l) => (
-                <a href={l.href}>{l.label}</a>
-              ))}
+    </header>
+
+    <main id="main-content" tabindex="-1">
+      <section class="manifesto shell section-space reveal" aria-labelledby="manifesto-title">
+        <div>
+          <p class="eyebrow">01 · Approach</p>
+        </div>
+        <div class="manifesto__copy">
+          <h2 id="manifesto-title">Complex systems can still feel human.</h2>
+          <div class="manifesto__columns">
+            <p>
+              I enjoy finding the shape inside a messy problem, tracing how the
+              pieces connect, testing the risky edges, and building something
+              calm enough that the complexity no longer gets in the way.
             </p>
-          )}
-        </li>
-      ))}
-    </ol>
-
-    <p class="aside">
-      More in <a href="https://github.com/peterphitran">the archive</a> —
-      <span class="wash">three or four new ones in progress</span>.
-    </p>
-  </section>
-
-  <div class="asterism" aria-hidden="true">⁂</div>
-
-  <section id="experience" class="section">
-    <div class="section-head"><h2>Where I've worked</h2></div>
-
-    <ol class="work-list">
-      {work.map((w) => (
-        <li>
-          <span class="meta">{w.when}</span>
-          <div>
-            <h3>{w.org}</h3>
-            {w.descHtml
-              ? <p class="desc" set:html={w.descHtml} />
-              : <p class="desc">{w.desc}</p>}
+            <p>
+              My work moves between infrastructure, AI, product engineering,
+              and research. The thread through all of it is curiosity, care,
+              and software that survives contact with the real world.
+            </p>
           </div>
-        </li>
-      ))}
-    </ol>
-  </section>
+        </div>
+      </section>
 
-  <div class="asterism" aria-hidden="true">⁂</div>
+      <section id="work" class="work-section shell section-space" aria-labelledby="work-title">
+        <div class="section-heading reveal">
+          <div>
+            <p class="eyebrow">02 · Selected work</p>
+            <h2 id="work-title">A few things I’ve made</h2>
+          </div>
+          <p>Experiments in making complicated systems more tangible.</p>
+        </div>
 
-  <section id="campus" class="section">
-    <div class="section-head"><h2>Around campus</h2></div>
-    <p class="dropcap">
-      When I'm not shipping code I'm usually out leading AWS Student Builders
-      workshops, working on SASE Research, Adobe Ambassadoring, or doing my
-      own thing like running or photography which you can find some of those
-      in the <a href="/gallery">gallery</a>.
-    </p>
-    <p class="desc" style="margin-top: 0.75rem;">
-      My most used tools recently: Python, TypeScript, FastAPI, React, Docker, AWS &amp; Azure, NodeJS.
-    </p>
-  </section>
+        <ol class="project-list" role="list">
+          <li class="project reveal">
+            <div class="project__number" aria-hidden="true">01</div>
+            <div class="project__body">
+              <div class="project__meta">
+                <span>AI + embedded systems</span>
+                <span>Open Model Hackathon</span>
+              </div>
+              <h3>Plant-Pal</h3>
+              <p class="project__tagline">
+                Giving a houseplant a voice, one soil reading at a time.
+              </p>
+              <p class="project__description">
+                An ESP32 reads soil moisture and humidity, gpt-oss-20b decides
+                how the plant feels, and Discord delivers the complaints.
+              </p>
+              <ul class="project__stack" role="list" aria-label="Technologies used">
+                <li>ESP32</li>
+                <li>Python</li>
+                <li>gpt-oss-20b</li>
+                <li>Discord</li>
+              </ul>
+              <div class="project__links">
+                <a href="https://github.com/Peter-Phi-Tran/Plant-Pal">View code</a>
+                <a href="https://devpost.com/software/ai-caramba">Devpost</a>
+              </div>
+            </div>
+          </li>
 
-  <div class="footnotes">
-    <ol>
-      <li id="fn1">
-        <span class="fn-num">1</span>he is often mad at me
-        <a href="#fnref1" aria-label="Back to reference 1">&#8617;</a>
-      </li>
-    </ol>
-  </div>
-</Base>
+          <li class="project reveal">
+            <div class="project__number" aria-hidden="true">02</div>
+            <div class="project__body">
+              <div class="project__meta">
+                <span>Distributed backend</span>
+                <span>Independent build</span>
+              </div>
+              <h3>Serapis</h3>
+              <p class="project__tagline">
+                Learning the machinery behind a production backend.
+              </p>
+              <p class="project__description">
+                A patient-management system with containerized services for
+                authentication and analytics, connected through gRPC and Kafka,
+                with AWS infrastructure simulated locally.
+              </p>
+              <ul class="project__stack" role="list" aria-label="Technologies used">
+                <li>Spring Boot</li>
+                <li>Kafka</li>
+                <li>gRPC</li>
+                <li>LocalStack</li>
+              </ul>
+            </div>
+          </li>
 
-<style>
-  .hero h1 {
-    font-size: clamp(1.75rem, 5vw, 2.5rem);
-    font-weight: 400;
-    margin: 0 0 1.25rem;
-  }
+          <li class="project reveal">
+            <div class="project__number" aria-hidden="true">03</div>
+            <div class="project__body">
+              <div class="project__meta">
+                <span>Multi-agent experience</span>
+                <span>HackTX</span>
+              </div>
+              <h3>Tachyon</h3>
+              <p class="project__tagline">
+                Turning car-financing trade-offs into something you can explore.
+              </p>
+              <p class="project__description">
+                A three-agent interview translates competing priorities into an
+                interactive 3D constellation instead of another spreadsheet to
+                dread.
+              </p>
+              <ul class="project__stack" role="list" aria-label="Project characteristics">
+                <li>Multi-agent</li>
+                <li>3D web</li>
+                <li>Data visualization</li>
+              </ul>
+              <div class="project__links">
+                <a href="https://devpost.com/software/tachyon-ruiz5h">View on Devpost</a>
+              </div>
+            </div>
+          </li>
+        </ol>
 
-  /* single confident pen stroke under one word */
-  .underline-ink {
-    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='6' viewBox='0 0 120 6'%3E%3Cpath d='M2 4.5 C 30 2, 60 1.5, 118 3.5' fill='none' stroke='%237d5a34' stroke-width='2' stroke-linecap='round' opacity='0.75'/%3E%3C/svg%3E")
-      bottom left / 100% 0.28em no-repeat;
-    padding-bottom: 0.2em;
-  }
+        <p class="archive-link reveal">
+          More experiments live in
+          <a href="https://github.com/peterphitran">the archive</a>.
+        </p>
+      </section>
 
-  .project-list, .work-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
+      <section id="experience" class="journey section-space" aria-labelledby="experience-title">
+        <div class="journey__texture" aria-hidden="true"></div>
+        <div class="shell">
+          <div class="section-heading section-heading--light reveal">
+            <div>
+              <p class="eyebrow eyebrow--light">03 · Along the path</p>
+              <h2 id="experience-title">Where I’ve worked</h2>
+            </div>
+            <p>Learning by building, researching, and shipping alongside good people.</p>
+          </div>
 
-  .project-list li {
-    padding: 1.5rem 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .project-list li:first-child { padding-top: 0.25rem; }
-  .project-list li:last-child { border-bottom: none; }
+          <ol class="timeline" role="list">
+            <li class="reveal">
+              <div class="timeline__marker" aria-hidden="true"><span></span></div>
+              <time datetime="2026">Summer 2026</time>
+              <h3>JPMorgan Chase</h3>
+            </li>
+            <li class="reveal">
+              <div class="timeline__marker" aria-hidden="true"><span></span></div>
+              <time datetime="2026">Summer 2026</time>
+              <h3>DIAL Labs · UT Arlington</h3>
+            </li>
+            <li class="reveal">
+              <div class="timeline__marker" aria-hidden="true"><span></span></div>
+              <span class="timeline__date">May 2025 – May 2026</span>
+              <h3>Beautisol</h3>
+            </li>
+            <li class="reveal">
+              <div class="timeline__marker" aria-hidden="true"><span></span></div>
+              <span class="timeline__date">2022 – 2023</span>
+              <h3>MISD Technology</h3>
+            </li>
+          </ol>
+        </div>
+      </section>
 
-  .project-head {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-  }
-  .project-head h3 {
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin: 0;
-  }
+      <section id="notes" class="notes shell section-space" aria-labelledby="notes-title">
+        <div class="notes__intro reveal">
+          <p class="eyebrow">04 · Dispatches</p>
+          <h2 id="notes-title">Notes from the work</h2>
+          <p>
+            What I’m building, what broke, and what the detour taught me.
+          </p>
+          <a class="text-link" href="/blog">Read all field notes</a>
+        </div>
 
-  .desc {
-    font-size: 0.98rem;
-    color: var(--ink-soft);
-    margin: 0.5rem 0 0;
-    max-width: 36rem;
-  }
+        <ol class="note-list" role="list">
+          {posts.map((post, index) => (
+            <li class="reveal">
+              <a href={`/blog/${post.slug}`}>
+                <div class="note-list__meta">
+                  <span>{String(index + 1).padStart(2, "0")}</span>
+                  <time datetime={post.data.date}>
+                    {new Date(post.data.date).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                      timeZone: "UTC",
+                    })}
+                  </time>
+                </div>
+                <h3>{post.data.title}</h3>
+                <p>{post.data.excerpt}</p>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </section>
 
-  .project-links {
-    display: flex;
-    gap: 1.25rem;
-    margin: 0.6rem 0 0;
-    font-family: var(--font-utility);
-    font-size: 0.82rem;
-    letter-spacing: 0.02em;
-  }
+    </main>
 
-  .aside {
-    margin-top: 1.5rem;
-    font-size: 0.95rem;
-    color: var(--ink-soft);
-  }
+    <footer id="contact" class="footer">
+      <div class="footer__glow" aria-hidden="true"></div>
+      <div class="shell footer__inner reveal">
+        <div class="footer__bottom">
+          <p class="signature">peter</p>
+          <nav aria-label="Contact and social links">
+            <a class="footer__social" href="mailto:ptran.tech@outlook.com" aria-label="Email" title="Email">
+              <Icon class="footer__icon" name="fa7-solid:envelope" aria-hidden="true" />
+            </a>
+            <a class="footer__social" href="https://github.com/peterphitran" aria-label="GitHub" title="GitHub">
+              <Icon class="footer__icon" name="devicon:github" aria-hidden="true" />
+            </a>
+            <a class="footer__social" href="https://www.linkedin.com/in/peter-phi-tran/" aria-label="LinkedIn" title="LinkedIn">
+              <Icon class="footer__icon footer__icon--linkedin" name="devicon:linkedin" aria-hidden="true" />
+            </a>
+            <a class="footer__social" href="/gallery" aria-label="Gallery" title="Gallery">
+              <Icon class="footer__icon" name="fa7-solid:images" aria-hidden="true" />
+            </a>
+          </nav>
+          <p class="footer__fine">Computer science · UT Arlington · Class of 2027</p>
+        </div>
+      </div>
+    </footer>
 
-  .work-list li {
-    display: grid;
-    grid-template-columns: 110px 1fr;
-    gap: 1.25rem;
-    padding: 1.4rem 0;
-    border-bottom: 1px solid var(--line);
-  }
-  .work-list li:first-child { padding-top: 0.25rem; }
-  .work-list li:last-child { border-bottom: none; }
-  .work-list .meta { padding-top: 0.45em; }
-  .work-list h3 {
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin: 0;
-  }
+    <script>
+      const revealWindow = window as Window & { __portfolioRevealFallback?: number };
+      if (revealWindow.__portfolioRevealFallback) {
+        window.clearTimeout(revealWindow.__portfolioRevealFallback);
+      }
 
-  @media (max-width: 540px) {
-    .work-list li { grid-template-columns: 1fr; gap: 0.2rem; }
-  }
-</style>
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const reveals = document.querySelectorAll<HTMLElement>(".reveal");
+
+      if (reduceMotion || !("IntersectionObserver" in window)) {
+        reveals.forEach((element) => element.classList.add("is-visible"));
+      } else {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            });
+          },
+          { threshold: 0.12, rootMargin: "0px 0px -8%" }
+        );
+
+        reveals.forEach((element) => observer.observe(element));
+      }
+    </script>
+  </body>
+</html>

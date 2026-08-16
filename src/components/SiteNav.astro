@@ -1,0 +1,143 @@
+---
+interface Props {
+  overlay?: boolean;
+}
+
+const { overlay = false } = Astro.props;
+const path = Astro.url.pathname;
+const links = [
+  { label: "Now", href: "/now" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Blog", href: "/blog" },
+  { label: "Topics", href: "/topics" },
+];
+
+const current = (href: string) =>
+  path === href || path.startsWith(`${href}/`) ? "page" : undefined;
+---
+
+<header class:list={["portfolio-nav", { "portfolio-nav--overlay": overlay }]}>
+  <div class="portfolio-nav__inner">
+    <a class="portfolio-nav__wordmark" href="/" aria-label="Peter Tran, home">
+      Peter Tran
+    </a>
+    <nav aria-label="Primary navigation">
+      {links.map((link) => (
+        <a href={link.href} aria-current={current(link.href)}>{link.label}</a>
+      ))}
+    </nav>
+  </div>
+</header>
+
+<style>
+  .portfolio-nav {
+    position: relative;
+    z-index: 20;
+    width: 100%;
+    color: #fffdf4;
+  }
+
+  .portfolio-nav:not(.portfolio-nav--overlay) {
+    margin-bottom: clamp(4rem, 9vw, 7rem);
+  }
+
+  .portfolio-nav--overlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+  }
+
+  .portfolio-nav__inner {
+    display: flex;
+    width: min(1180px, calc(100% - 64px));
+    min-height: 92px;
+    margin-inline: auto;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(255, 253, 244, 0.18);
+  }
+
+  .portfolio-nav__wordmark {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    color: #fffdf4;
+    font-family: "Lora Variable", Georgia, serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    font-weight: 550;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    font-family: "Raleway Variable", "Helvetica Neue", Arial, sans-serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.02em;
+  }
+
+  nav a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    border-bottom: 1px solid transparent;
+    color: rgba(255, 253, 244, 0.78);
+    text-decoration: none;
+    transition: border-color 160ms ease, color 160ms ease;
+  }
+
+  nav a:hover {
+    color: #d7e69b;
+  }
+
+  nav a[aria-current="page"] {
+    border-bottom-color: #a8c84a;
+    color: #fffdf4;
+  }
+
+  :is(.portfolio-nav__wordmark, nav a):focus-visible {
+    outline: 2px solid #d7e69b;
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 800px) {
+    .portfolio-nav__inner {
+      width: min(100% - 40px, 680px);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .portfolio-nav__inner {
+      width: calc(100% - 32px);
+      min-height: 118px;
+      padding-block: 0.7rem;
+      align-items: flex-start;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.1rem;
+    }
+
+    nav {
+      width: 100%;
+      flex-wrap: wrap;
+      gap: 0.2rem 1.3rem;
+      font-size: 0.8rem;
+    }
+
+    nav a {
+      min-height: 44px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    nav a {
+      transition: none;
+    }
+  }
+</style>

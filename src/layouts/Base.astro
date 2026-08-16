@@ -1,6 +1,11 @@
 ---
 // Base.astro — shared shell for every page.
 import "../styles/theme.css";
+import "../styles/scrollbar.css";
+import "@fontsource-variable/lora";
+import "@fontsource-variable/lora/wght-italic.css";
+import "@fontsource-variable/raleway";
+import SiteNav from "../components/SiteNav.astro";
 
 interface Props {
   title: string;
@@ -10,13 +15,9 @@ interface Props {
 
 const {
   title,
-  description = "Peter Tran — CS student at UT Arlington building software that survives the real world.",
+  description = "Peter Tran, a CS student at UT Arlington building software that survives the real world.",
   wide = false,
 } = Astro.props;
-
-const path = Astro.url.pathname;
-const current = (href: string) =>
-  path === href || (href !== "/" && path.startsWith(href)) ? "page" : undefined;
 ---
 
 <html lang="en">
@@ -25,29 +26,22 @@ const current = (href: string) =>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title === "Home" ? "Peter Tran" : `${title} · Peter Tran`}</title>
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#0c4a49" />
     <meta property="og:title" content="Peter Tran" />
     <meta property="og:description" content={description} />
     <!-- TODO: replace with a real social image in /public -->
     <meta property="og:image" content="/og.png" />
   </head>
 
-  <body>
+  <body class="interior-page">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <SiteNav />
     <div class={wide ? "page page--wide" : "page"}>
-      <header class="site-header">
-        <a class="wordmark" href="/">Peter Tran</a>
-        <nav>
-          <a href="/now" aria-current={current("/now")}>Now</a>
-          <a href="/gallery" aria-current={current("/gallery")}>Gallery</a>
-          <a href="/blog" aria-current={current("/blog")}>Blog</a>
-          <a href="/topics" aria-current={current("/topics")}>Topics</a>
-        </nav>
-      </header>
-
-      <main>
+      <main id="main-content" tabindex="-1">
         <slot />
       </main>
       <footer class="site-footer">
-        <p class="signature">— peter</p>
+        <p class="signature">peter</p>
         <p style="margin: 0 0 1.25rem; font-size: 0.95rem;">
           <a href="mailto:ptran.tech@outlook.com">ptran.tech@outlook.com</a>
           <span aria-hidden="true"> · </span>
@@ -55,7 +49,7 @@ const current = (href: string) =>
           <span aria-hidden="true"> · </span>
           <a href="https://www.linkedin.com/in/peter-phi-tran/">LinkedIn</a>
         </p>
-        <p class="fine">© 2026 Peter Tran · set in Fraunces and Newsreader, annotated by hand</p>
+        <p class="fine">© 2026 Peter Tran · Set in Lora and Raleway</p>
       </footer>
     </div>
   </body>

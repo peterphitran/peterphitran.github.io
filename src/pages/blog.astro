@@ -16,10 +16,12 @@ const posts = (await getCollection("blog")).sort(
     I learned along the way.
   </p>
 
-  <ol class="ledger">
+  <ol class="ledger" role="list">
     {posts.map((post) => (
       <li>
-        <span class="meta">{new Date(post.data.date).getUTCFullYear()}</span>
+        <time class="meta" datetime={post.data.date}>
+          {new Date(post.data.date).getUTCFullYear()}
+        </time>
         <div>
           <h2><a href={`/blog/${post.slug}`}>{post.data.title}</a></h2>
           <p class="desc">{post.data.excerpt}</p>

@@ -24,7 +24,7 @@ const fmt = (d: string) =>
   <p class="back"><a href="/blog">&#8592; back to blog</a></p>
   <article class="post">
     <h1 class="page-title">{post.data.title}</h1>
-    <p class="meta note">{fmt(post.data.date)}</p>
+    <time class="meta note" datetime={post.data.date}>{fmt(post.data.date)}</time>
     <div class="body">
       <Content />
     </div>
@@ -41,7 +41,7 @@ const fmt = (d: string) =>
   .back a:hover { color: var(--moss-deep); }
 
   .post .page-title { margin-bottom: 0.4rem; }
-  .meta { font-size: 1.15rem; margin: 0 0 2.4rem; }
+  .meta { display: block; font-size: 1.15rem; margin: 0 0 2.4rem; }
 
   /* markdown body */
   .body :global(h2) { font-size: 1.4rem; margin: 2.4rem 0 0.8rem; }

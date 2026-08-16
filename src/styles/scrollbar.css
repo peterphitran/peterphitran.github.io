@@ -1,0 +1,41 @@
+:root {
+  --scrollbar-thumb: #031f20;
+  --scrollbar-thumb-hover: #082f31;
+  --scrollbar-track: color-mix(
+    in srgb,
+    var(--paper, #f7f3e8) 96%,
+    var(--scrollbar-thumb)
+  );
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  border: 3px solid var(--scrollbar-track);
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--scrollbar-thumb) 90%, var(--ivory, #fffdf4)),
+    var(--scrollbar-thumb)
+  );
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+@media (forced-colors: active) {
+  :root {
+    scrollbar-color: auto;
+  }
+}

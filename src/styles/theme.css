@@ -4,48 +4,37 @@
    Imported once by src/layouts/Base.astro
    ------------------------------------------------------------------ */
 
-@import url("https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Caveat:wght@500;600&display=swap");
-
 :root {
-  /* paper + ink */
-  --paper: #faf6ee;        /* flat warm paper — no texture */
-  --ink: #2e2a23;          /* warm near-black, like dried ink */
-  --ink-soft: #6b6355;     /* secondary text */
-  --ink-faint: #a49a87;    /* metadata, dates */
-  --line: #e6ddcc;         /* hairline rules */
-
-  /* one accent: sepia ink, the color of pen annotations */
-  --pen: #7d5a34;
-  --pen-strong: #5c401f;
+  color-scheme: dark;
+  --paper: #0c4a49;
+  --paper-raised: #083b3d;
+  --ink: #fffdf4;
+  --ink-soft: #c7d5ce;
+  --ink-faint: #a8bdb5;
+  --line: rgba(255, 253, 244, 0.18);
+  --line-strong: rgba(255, 253, 244, 0.42);
+  --pen: #a8c84a;
+  --pen-strong: #d7e69b;
+  --honey: #d7e69b;
+  --moss-deep: #d7e69b;
 
   /* type */
-  --font-display: "Fraunces", Georgia, serif;
-  --font-body: "Newsreader", Georgia, serif;
-  --font-hand: "Caveat", cursive;
-  --font-utility: "Karla", system-ui, sans-serif;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --paper: #201d17;
-    --ink: #e9e2d3;
-    --ink-soft: #b0a691;
-    --ink-faint: #7d7462;
-    --line: #38332a;
-    --pen: #c49a63;
-    --pen-strong: #d9b47f;
-  }
+  --font-display: "Lora Variable", Georgia, serif;
+  --font-body: "Raleway Variable", "Helvetica Neue", Arial, sans-serif;
+  --font-hand: "Lora Variable", Georgia, serif;
+  --font-utility: "Raleway Variable", "Helvetica Neue", Arial, sans-serif;
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
 body {
+  min-height: 100vh;
   margin: 0;
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
@@ -59,7 +48,7 @@ h1, h2, h3 {
 
 a {
   color: var(--pen);
-  text-decoration-color: color-mix(in srgb, var(--pen) 40%, transparent);
+  text-decoration-color: var(--pen);
   text-decoration-thickness: 1px;
   text-underline-offset: 4px;
   transition: color 120ms ease, text-decoration-color 120ms ease;
@@ -69,10 +58,10 @@ a:hover {
   text-decoration-color: var(--pen-strong);
 }
 
-a:focus-visible, button:focus-visible {
-  outline: 2px solid var(--pen);
+a:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--pen-strong);
   outline-offset: 3px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 ::selection { background: color-mix(in srgb, var(--pen) 22%, transparent); }
@@ -80,11 +69,30 @@ a:focus-visible, button:focus-visible {
 /* ---------- shared building blocks ---------- */
 
 .page {
-  max-width: 640px;
+  max-width: 760px;
   margin: 0 auto;
-  padding: 2.5rem 1.4rem 4rem;
+  padding: 0 2rem 4rem;
 }
-.page--wide { max-width: 880px; }
+.page--wide { max-width: 1080px; }
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-utility);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform 160ms ease;
+}
+
+.skip-link:focus { transform: translateY(0); }
 
 /* handwritten ink annotation — small, rare, delicate.
    One per section, maximum. */
@@ -94,7 +102,7 @@ a:focus-visible, button:focus-visible {
   color: var(--pen);
   display: inline-block;
   line-height: 1.5;
-  transform: rotate(-1deg);
+  font-style: italic;
 }
 
 .section { margin-top: 5rem; }
@@ -121,15 +129,19 @@ a:focus-visible, button:focus-visible {
 }
 
 .page-title {
-  font-size: clamp(1.8rem, 5vw, 2.3rem);
-  font-style: italic;
-  font-weight: 400;
+  font-size: clamp(3rem, 8vw, 5.4rem);
+  font-weight: 450;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
   margin: 0 0 0.75rem;
 }
 .page-intro {
   color: var(--ink-soft);
-  max-width: 34rem;
-  margin: 0 0 3rem;
+  max-width: 38rem;
+  margin: 0 0 4rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  line-height: 1.65;
 }
 
 /* dates & metadata: small caps in the utility sans */
@@ -141,36 +153,7 @@ a:focus-visible, button:focus-visible {
   color: var(--ink-faint);
 }
 
-/* header + footer (rendered by Base.astro) */
-.site-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
-  margin-bottom: 5rem;
-}
-.wordmark {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.2rem;
-  color: var(--ink);
-  text-decoration: none;
-}
-.site-header nav {
-  display: flex;
-  gap: 1.4rem;
-  font-family: var(--font-utility);
-  font-size: 0.85rem;
-  letter-spacing: 0.02em;
-}
-.site-header nav a { color: var(--ink-soft); text-decoration: none; }
-.site-header nav a:hover { color: var(--pen-strong); }
-.site-header nav a[aria-current="page"] {
-  color: var(--ink);
-  border-bottom: 1px solid var(--pen);
-  padding-bottom: 2px;
-}
-
+/* Footer rendered by Base.astro */
 .site-footer {
   margin-top: 6rem;
   border-top: 1px solid var(--line);
@@ -178,9 +161,9 @@ a:focus-visible, button:focus-visible {
 }
 .signature {
   font-family: var(--font-hand);
-  font-size: 1.7rem;
-  color: var(--pen);
-  transform: rotate(-2deg);
+  font-size: 1.35rem;
+  color: var(--pen-strong);
+  font-style: italic;
   display: inline-block;
   margin: 0 0 1rem;
 }
@@ -192,7 +175,7 @@ a:focus-visible, button:focus-visible {
 }
 
 @media (max-width: 480px) {
-  .site-header { flex-direction: column; gap: 0.5rem; margin-bottom: 3.5rem; }
+  .page { padding-inline: 1rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -203,10 +186,7 @@ a:focus-visible, button:focus-visible {
 /* ---------- accent vocabulary: marginalia system ---------- */
 
 /* second ink: editor's red. Use at most twice per page. */
-:root { --madder: #96432e; }
-@media (prefers-color-scheme: dark) {
-  :root { --madder: #cd7f66; }
-}
+:root { --madder: #e8a58d; }
 .note--red { color: var(--madder); }
 
 /* true margin note: sits in the book's margin on wide screens.
@@ -228,11 +208,6 @@ a:focus-visible, button:focus-visible {
   padding: 0.08em 0.4em;
   margin: 0 -0.15em;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='44' viewBox='0 0 160 44' preserveAspectRatio='none'%3E%3Cpath d='M28 6 C 70 1, 140 3, 150 16 C 158 28, 130 40, 76 40 C 30 40, 6 34, 6 22 C 6 12, 22 7, 60 5' fill='none' stroke='%2396432e' stroke-width='2' stroke-linecap='round' opacity='0.8'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
-}
-@media (prefers-color-scheme: dark) {
-  .circle-ink {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='44' viewBox='0 0 160 44' preserveAspectRatio='none'%3E%3Cpath d='M28 6 C 70 1, 140 3, 150 16 C 158 28, 130 40, 76 40 C 30 40, 6 34, 6 22 C 6 12, 22 7, 60 5' fill='none' stroke='%23cd7f66' stroke-width='2' stroke-linecap='round' opacity='0.8'/%3E%3C/svg%3E");
-  }
 }
 
 /* asterism: the classic section divider of a well-set book */
@@ -259,10 +234,7 @@ a:focus-visible, button:focus-visible {
 }
 
 /* ---------- third ink: moss — growth & the author's own asides ---------- */
-:root { --moss: #5f7040; }
-@media (prefers-color-scheme: dark) {
-  :root { --moss: #9cb173; }
-}
+:root { --moss: #afc681; }
 .note--moss { color: var(--moss); }
 
 /* ink wash: a soft moss tint behind a phrase about something growing.
@@ -306,3 +278,29 @@ a:focus-visible, button:focus-visible {
   color: var(--moss);
 }
 .sprig svg { width: 32px; height: auto; }
+
+.body summary {
+  color: var(--ink) !important;
+}
+
+.body :where(code, pre, table, blockquote, th, td) {
+  border-color: var(--line-strong);
+}
+
+.body table {
+  display: table !important;
+  max-width: 100%;
+  table-layout: fixed;
+  overflow-wrap: anywhere;
+}
+
+.body :where(th, td) {
+  border-color: var(--line-strong) !important;
+  overflow-wrap: anywhere;
+}
+
+.body pre {
+  overflow-x: visible !important;
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere;
+}

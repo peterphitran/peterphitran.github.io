@@ -16,7 +16,7 @@ const topics = (await getCollection("topics")).sort((a, b) =>
     occasional write ups.
   </p>
 
-  <ol class="toc">
+  <ol class="toc" role="list">
     {topics.map((t) => (
       <li>
         <div class="toc-row">
