@@ -21,8 +21,8 @@ const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin)
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0c4a49" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#082f31" />
     <meta
       name="description"
       content="Peter Tran is a software engineer and researcher building thoughtful systems across AI, infrastructure, and product engineering."
@@ -46,7 +46,7 @@ const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin)
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
 
-    <header class="hero" aria-labelledby="hero-title">
+    <header class="hero" aria-labelledby="hero-title" data-browser-color="#082f31">
       <Image
         class="hero__art"
         src={matterhornImage}
@@ -80,7 +80,7 @@ const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin)
 
     </header>
 
-    <main id="main-content" tabindex="-1">
+    <main id="main-content" tabindex="-1" data-browser-color="#f7f3e8">
       <section class="manifesto shell section-space reveal" aria-labelledby="manifesto-title">
         <div>
           <p class="eyebrow">01 · Approach</p>
@@ -199,7 +199,12 @@ const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin)
         </p>
       </section>
 
-      <section id="experience" class="journey section-space" aria-labelledby="experience-title">
+      <section
+        id="experience"
+        class="journey section-space"
+        aria-labelledby="experience-title"
+        data-browser-color="#0c4a49"
+      >
         <div class="journey__texture" aria-hidden="true"></div>
         <div class="shell">
           <div class="section-heading section-heading--light reveal">
@@ -270,7 +275,7 @@ const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin)
 
     </main>
 
-    <footer id="contact" class="footer">
+    <footer id="contact" class="footer" data-browser-color="#082f31">
       <div class="footer__glow" aria-hidden="true"></div>
       <div class="shell footer__inner reveal">
         <div class="footer__bottom">
@@ -319,6 +324,30 @@ const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin)
 
         reveals.forEach((element) => observer.observe(element));
       }
+
+      const browserTheme = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+      let browserThemeFrame: number | undefined;
+
+      const syncBrowserTheme = () => {
+        if (!browserTheme || browserThemeFrame !== undefined) return;
+
+        browserThemeFrame = window.requestAnimationFrame(() => {
+          browserThemeFrame = undefined;
+          const surface = document
+            .elementFromPoint(window.innerWidth / 2, window.innerHeight / 2)
+            ?.closest<HTMLElement>("[data-browser-color]");
+          const color = surface?.dataset.browserColor;
+
+          if (color && browserTheme.content !== color) {
+            browserTheme.content = color;
+          }
+        });
+      };
+
+      window.addEventListener("scroll", syncBrowserTheme, { passive: true });
+      window.addEventListener("resize", syncBrowserTheme, { passive: true });
+      window.addEventListener("pageshow", syncBrowserTheme);
+      syncBrowserTheme();
     </script>
   </body>
 </html>

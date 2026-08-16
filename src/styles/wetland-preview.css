@@ -19,10 +19,11 @@
 
 html {
   scroll-behavior: smooth;
-  background: var(--paper);
+  background: var(--lagoon-950);
 }
 
 body {
+  min-height: 100dvh;
   margin: 0;
   background: var(--paper);
   color: var(--ink);
@@ -91,8 +92,8 @@ h3 {
 
 .skip-link {
   position: fixed;
-  top: 12px;
-  left: 12px;
+  top: max(12px, env(safe-area-inset-top, 0px));
+  left: max(12px, env(safe-area-inset-left, 0px));
   z-index: 100;
   padding: 0.7rem 1rem;
   border-radius: 999px;
@@ -616,7 +617,7 @@ main {
 .footer {
   position: relative;
   overflow: hidden;
-  padding-block: 0 3rem;
+  padding-block: 0 calc(3rem + env(safe-area-inset-bottom, 0px));
   background: var(--lagoon-950);
   color: var(--ivory);
   isolation: isolate;
