@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
-import { Icon } from "astro-icon/components";
 import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 import matterhornImage from "../assets/matterhorn-hero-v1.png";
 import "@fontsource-variable/lora";
 import "@fontsource-variable/lora/wght-italic.css";
@@ -18,7 +18,7 @@ const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin)
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#082f31" />
+    <meta name="theme-color" content="#0c4a49" />
     <meta
       name="description"
       content="Peter Tran is a software engineer and researcher building thoughtful systems across AI, infrastructure, and product engineering."
@@ -183,29 +183,7 @@ const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin)
 
     </main>
 
-    <footer id="contact" class="footer">
-      <div class="footer__glow" aria-hidden="true"></div>
-      <div class="shell footer__inner reveal">
-        <div class="footer__bottom">
-          <p class="signature">peter</p>
-          <nav aria-label="Contact and social links">
-            <a class="footer__social" href="mailto:ptran.tech@outlook.com" aria-label="Email" title="Email">
-              <Icon class="footer__icon" name="fa7-solid:envelope" aria-hidden="true" />
-            </a>
-            <a class="footer__social" href="https://github.com/peterphitran" aria-label="GitHub" title="GitHub">
-              <Icon class="footer__icon" name="devicon:github" aria-hidden="true" />
-            </a>
-            <a class="footer__social" href="https://www.linkedin.com/in/peter-phi-tran/" aria-label="LinkedIn" title="LinkedIn">
-              <Icon class="footer__icon footer__icon--linkedin" name="devicon:linkedin" aria-hidden="true" />
-            </a>
-            <a class="footer__social" href="/gallery" aria-label="Gallery" title="Gallery">
-              <Icon class="footer__icon" name="fa7-solid:images" aria-hidden="true" />
-            </a>
-          </nav>
-          <p class="footer__fine">Computer science · UT Arlington · Class of 2027</p>
-        </div>
-      </div>
-    </footer>
+    <SiteFooter />
 
     <script>
       const revealWindow = window as Window & { __portfolioRevealFallback?: number };

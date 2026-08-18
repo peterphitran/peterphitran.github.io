@@ -6,6 +6,7 @@ import "@fontsource-variable/lora";
 import "@fontsource-variable/lora/wght-italic.css";
 import "@fontsource-variable/raleway";
 import SiteNav from "../components/SiteNav.astro";
+import SiteFooter from "../components/SiteFooter.astro";
 
 interface Props {
   title: string;
@@ -40,17 +41,7 @@ const {
       <main id="main-content" tabindex="-1">
         <slot />
       </main>
-      <footer class="site-footer">
-        <p class="signature">peter</p>
-        <p style="margin: 0 0 1.25rem; font-size: 0.95rem;">
-          <a href="mailto:ptran.tech@outlook.com">ptran.tech@outlook.com</a>
-          <span aria-hidden="true"> · </span>
-          <a href="https://github.com/peterphitran">GitHub</a>
-          <span aria-hidden="true"> · </span>
-          <a href="https://www.linkedin.com/in/peter-phi-tran/">LinkedIn</a>
-        </p>
-        <p class="fine">© 2026 Peter Tran · Set in Lora and Raleway</p>
-      </footer>
     </div>
+    <SiteFooter />
   </body>
 </html>
