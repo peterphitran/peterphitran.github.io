@@ -1,6 +1,5 @@
 ---
 import { Image } from "astro:assets";
-import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
 import SiteNav from "../components/SiteNav.astro";
 import matterhornImage from "../assets/matterhorn-hero-v1.png";
@@ -9,10 +8,6 @@ import "@fontsource-variable/lora/wght-italic.css";
 import "@fontsource-variable/raleway";
 import "../styles/wetland-preview.css";
 import "../styles/scrollbar.css";
-
-const posts = (await getCollection("blog"))
-  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
-  .slice(0, 3);
 
 const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin).toString();
 ---
@@ -103,113 +98,16 @@ const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin)
         </div>
       </section>
 
-      <section id="work" class="work-section shell section-space" aria-labelledby="work-title">
-        <div class="section-heading reveal">
-          <div>
-            <p class="eyebrow">02 · Selected work</p>
-            <h2 id="work-title">A few things I’ve made</h2>
-          </div>
-          <p>Experiments in making complicated systems more tangible.</p>
-        </div>
-
-        <ol class="project-list" role="list">
-          <li class="project reveal">
-            <div class="project__number" aria-hidden="true">01</div>
-            <div class="project__body">
-              <div class="project__meta">
-                <span>AI + embedded systems</span>
-                <span>Open Model Hackathon</span>
-              </div>
-              <h3>Plant-Pal</h3>
-              <p class="project__tagline">
-                Giving a houseplant a voice, one soil reading at a time.
-              </p>
-              <p class="project__description">
-                An ESP32 reads soil moisture and humidity, gpt-oss-20b decides
-                how the plant feels, and Discord delivers the complaints.
-              </p>
-              <ul class="project__stack" role="list" aria-label="Technologies used">
-                <li>ESP32</li>
-                <li>Python</li>
-                <li>gpt-oss-20b</li>
-                <li>Discord</li>
-              </ul>
-              <div class="project__links">
-                <a href="https://github.com/Peter-Phi-Tran/Plant-Pal">View code</a>
-                <a href="https://devpost.com/software/ai-caramba">Devpost</a>
-              </div>
-            </div>
-          </li>
-
-          <li class="project reveal">
-            <div class="project__number" aria-hidden="true">02</div>
-            <div class="project__body">
-              <div class="project__meta">
-                <span>Distributed backend</span>
-                <span>Independent build</span>
-              </div>
-              <h3>Serapis</h3>
-              <p class="project__tagline">
-                Learning the machinery behind a production backend.
-              </p>
-              <p class="project__description">
-                A patient-management system with containerized services for
-                authentication and analytics, connected through gRPC and Kafka,
-                with AWS infrastructure simulated locally.
-              </p>
-              <ul class="project__stack" role="list" aria-label="Technologies used">
-                <li>Spring Boot</li>
-                <li>Kafka</li>
-                <li>gRPC</li>
-                <li>LocalStack</li>
-              </ul>
-            </div>
-          </li>
-
-          <li class="project reveal">
-            <div class="project__number" aria-hidden="true">03</div>
-            <div class="project__body">
-              <div class="project__meta">
-                <span>Multi-agent experience</span>
-                <span>HackTX</span>
-              </div>
-              <h3>Tachyon</h3>
-              <p class="project__tagline">
-                Turning car-financing trade-offs into something you can explore.
-              </p>
-              <p class="project__description">
-                A three-agent interview translates competing priorities into an
-                interactive 3D constellation instead of another spreadsheet to
-                dread.
-              </p>
-              <ul class="project__stack" role="list" aria-label="Project characteristics">
-                <li>Multi-agent</li>
-                <li>3D web</li>
-                <li>Data visualization</li>
-              </ul>
-              <div class="project__links">
-                <a href="https://devpost.com/software/tachyon-ruiz5h">View on Devpost</a>
-              </div>
-            </div>
-          </li>
-        </ol>
-
-        <p class="archive-link reveal">
-          More experiments live in
-          <a href="https://github.com/peterphitran">the archive</a>.
-        </p>
-      </section>
-
-      <section
-        id="experience"
-        class="journey section-space"
-        aria-labelledby="experience-title"
-      >
+      <div class="journey">
         <div class="journey__texture" aria-hidden="true"></div>
-        <div class="shell">
+        <section
+          id="experience"
+          class="journey__experience shell section-space"
+          aria-labelledby="experience-title"
+        >
           <div class="section-heading section-heading--light reveal">
             <div>
-              <p class="eyebrow eyebrow--light">03 · Along the path</p>
+              <p class="eyebrow eyebrow--light">02 · Along the path</p>
               <h2 id="experience-title">Where I’ve worked</h2>
             </div>
             <p>Learning by building, researching, and shipping alongside good people.</p>
@@ -237,41 +135,51 @@ const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin)
               <h3>MISD Technology</h3>
             </li>
           </ol>
-        </div>
-      </section>
+        </section>
 
-      <section id="notes" class="notes shell section-space" aria-labelledby="notes-title">
-        <div class="notes__intro reveal">
-          <p class="eyebrow">04 · Dispatches</p>
-          <h2 id="notes-title">Notes from the work</h2>
-          <p>
-            What I’m building, what broke, and what the detour taught me.
-          </p>
-          <a class="text-link" href="/blog">Read all field notes</a>
-        </div>
+        <section id="work" class="work-section shell section-space" aria-labelledby="work-title">
+          <div class="section-heading section-heading--light reveal">
+            <div>
+              <p class="eyebrow eyebrow--light">03 · Selected work</p>
+              <h2 id="work-title">A few things I’ve made</h2>
+            </div>
+            <p>Experiments in making complicated systems more tangible.</p>
+          </div>
 
-        <ol class="note-list" role="list">
-          {posts.map((post, index) => (
-            <li class="reveal">
-              <a href={`/blog/${post.slug}`}>
-                <div class="note-list__meta">
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <time datetime={post.data.date}>
-                    {new Date(post.data.date).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                      timeZone: "UTC",
-                    })}
-                  </time>
-                </div>
-                <h3>{post.data.title}</h3>
-                <p>{post.data.excerpt}</p>
-              </a>
+          <ol class="project-list" role="list">
+            <li class="project reveal">
+              <span class="project__number" aria-hidden="true">01</span>
+              <div>
+                <h3>Plant-Pal</h3>
+                <p>Giving a houseplant a voice through a small sensor and a little AI.</p>
+                <a href="https://github.com/Peter-Phi-Tran/Plant-Pal">View code</a>
+              </div>
             </li>
-          ))}
-        </ol>
-      </section>
+
+            <li class="project reveal">
+              <span class="project__number" aria-hidden="true">02</span>
+              <div>
+                <h3>Serapis</h3>
+                <p>A patient-management system for learning the shape of a production backend.</p>
+              </div>
+            </li>
+
+            <li class="project reveal">
+              <span class="project__number" aria-hidden="true">03</span>
+              <div>
+                <h3>Tachyon</h3>
+                <p>A conversational way to explore the trade-offs behind car financing.</p>
+                <a href="https://devpost.com/software/tachyon-ruiz5h">View on Devpost</a>
+              </div>
+            </li>
+          </ol>
+
+          <p class="archive-link reveal">
+            More experiments live in
+            <a href="https://github.com/peterphitran">the archive</a>.
+          </p>
+        </section>
+      </div>
 
     </main>
 
