@@ -21,7 +21,7 @@ const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin)
     <meta name="theme-color" content="#0c4a49" />
     <meta
       name="description"
-      content="Peter Tran is a software engineer and researcher building thoughtful systems across AI, infrastructure, and product engineering."
+      content="A software engineer and researcher building thoughtful systems across AI, infrastructure, and product engineering."
     />
     <meta property="og:title" content="Peter Tran" />
     <meta
@@ -30,19 +30,13 @@ const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin)
     />
     <meta property="og:type" content="website" />
     <meta property="og:image" content={socialImage} />
-    <title>Peter Tran · Software engineer and researcher</title>
-    <script is:inline>
-      document.documentElement.classList.add("js");
-      window.__portfolioRevealFallback = window.setTimeout(() => {
-        document.documentElement.classList.add("reveal-fallback");
-      }, 2500);
-    </script>
+    <title>Peter Tran</title>
   </head>
 
   <body>
     <a class="skip-link" href="#main-content">Skip to content</a>
 
-    <header class="hero" aria-labelledby="hero-title">
+    <div class="hero">
       <Image
         class="hero__art"
         src={matterhornImage}
@@ -59,158 +53,32 @@ const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin)
 
       <SiteNav overlay />
 
-      <div class="hero__content shell">
-        <p class="eyebrow eyebrow--light reveal">Software engineer · Researcher</p>
-        <h1 id="hero-title" class="reveal reveal--delay-1">
-          I build software for systems with <em>a lot going on.</em>
-        </h1>
-        <p class="hero__lede reveal reveal--delay-2">
-          From AI and distributed infrastructure to one very opinionated
-          houseplant, I like turning complicated systems into things people can
-          understand and trust.
+      <main id="main-content" class="hero__content shell" tabindex="-1">
+        <h1 id="hero-title">Software engineer and computer science researcher.</h1>
+        <p class="hero__lede">
+          I study computer science with a mathematics minor at UT Arlington.
+          Currently conducting deep learning undergraduate research with DIAL Labs on inductive
+          graph link prediction.
         </p>
-        <p class="hero__meta reveal reveal--delay-3">
-          Computer Science · Mathematics minor · UT Arlington · Class of ’27
-        </p>
-      </div>
-
-    </header>
-
-    <main id="main-content" tabindex="-1">
-      <section class="manifesto shell section-space reveal" aria-labelledby="manifesto-title">
-        <div>
-          <p class="eyebrow">01 · Approach</p>
-        </div>
-        <div class="manifesto__copy">
-          <h2 id="manifesto-title">Complex systems can still feel human.</h2>
-          <div class="manifesto__columns">
-            <p>
-              I enjoy finding the shape inside a messy problem, tracing how the
-              pieces connect, testing the risky edges, and building something
-              calm enough that the complexity no longer gets in the way.
-            </p>
-            <p>
-              My work moves between infrastructure, AI, product engineering,
-              and research. The thread through all of it is curiosity, care,
-              and software that survives contact with the real world.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <div class="journey">
-        <div class="journey__texture" aria-hidden="true"></div>
-        <section
-          id="experience"
-          class="journey__experience shell section-space"
-          aria-labelledby="experience-title"
-        >
-          <div class="section-heading section-heading--light reveal">
-            <div>
-              <p class="eyebrow eyebrow--light">02 · Along the path</p>
-              <h2 id="experience-title">Where I’ve worked</h2>
-            </div>
-            <p>Learning by building, researching, and shipping alongside good people.</p>
-          </div>
-
-          <ol class="timeline" role="list">
-            <li class="reveal">
-              <div class="timeline__marker" aria-hidden="true"><span></span></div>
-              <time datetime="2026">Summer 2026</time>
-              <h3>JPMorgan Chase</h3>
-            </li>
-            <li class="reveal">
-              <div class="timeline__marker" aria-hidden="true"><span></span></div>
-              <time datetime="2026">Summer 2026</time>
-              <h3>DIAL Labs · UT Arlington</h3>
-            </li>
-            <li class="reveal">
-              <div class="timeline__marker" aria-hidden="true"><span></span></div>
-              <span class="timeline__date">May 2025 – May 2026</span>
-              <h3>Beautisol</h3>
-            </li>
-            <li class="reveal">
-              <div class="timeline__marker" aria-hidden="true"><span></span></div>
-              <span class="timeline__date">2022 – 2023</span>
-              <h3>MISD Technology</h3>
-            </li>
-          </ol>
-        </section>
-
-        <section id="work" class="work-section shell section-space" aria-labelledby="work-title">
-          <div class="section-heading section-heading--light reveal">
-            <div>
-              <p class="eyebrow eyebrow--light">03 · Selected work</p>
-              <h2 id="work-title">A few things I’ve made</h2>
-            </div>
-            <p>Experiments in making complicated systems more tangible.</p>
-          </div>
-
-          <ol class="project-list" role="list">
-            <li class="project reveal">
-              <span class="project__number" aria-hidden="true">01</span>
-              <div>
-                <h3>Plant-Pal</h3>
-                <p>Giving a houseplant a voice through a small sensor and a little AI.</p>
-                <a href="https://github.com/Peter-Phi-Tran/Plant-Pal">View code</a>
-              </div>
-            </li>
-
-            <li class="project reveal">
-              <span class="project__number" aria-hidden="true">02</span>
-              <div>
-                <h3>Serapis</h3>
-                <p>A patient-management system for learning the shape of a production backend.</p>
-              </div>
-            </li>
-
-            <li class="project reveal">
-              <span class="project__number" aria-hidden="true">03</span>
-              <div>
-                <h3>Tachyon</h3>
-                <p>A conversational way to explore the trade-offs behind car financing.</p>
-                <a href="https://devpost.com/software/tachyon-ruiz5h">View on Devpost</a>
-              </div>
-            </li>
-          </ol>
-
-          <p class="archive-link reveal">
-            More experiments live in
-            <a href="https://github.com/peterphitran">the archive</a>.
+        <div class="hero__details">
+          <p>
+            former swe intern at <strong>JP Morgan Chase</strong> focused on agentic workflow
+            development & infrastructure.
           </p>
-        </section>
-      </div>
-
-    </main>
+          <p>
+            previously a sde intern at <strong>Aereos</strong> building cloud infrastructure & IoT
+            firmware.
+          </p>
+          <p>
+            started as an it intern at <strong>Mansfield ISD Technology</strong> working on software
+            and hardware troubleshooting.
+          </p>
+          <p>I’m interested in AI, distributed systems, infrastructure, and developer tools.</p>
+          <p>Outside of software, I run, play volleyball, and take photos.</p>
+        </div>
+      </main>
+    </div>
 
     <SiteFooter />
-
-    <script>
-      const revealWindow = window as Window & { __portfolioRevealFallback?: number };
-      if (revealWindow.__portfolioRevealFallback) {
-        window.clearTimeout(revealWindow.__portfolioRevealFallback);
-      }
-
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      const reveals = document.querySelectorAll<HTMLElement>(".reveal");
-
-      if (reduceMotion || !("IntersectionObserver" in window)) {
-        reveals.forEach((element) => element.classList.add("is-visible"));
-      } else {
-        const observer = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (!entry.isIntersecting) return;
-              entry.target.classList.add("is-visible");
-              observer.unobserve(entry.target);
-            });
-          },
-          { threshold: 0.12, rootMargin: "0px 0px -8%" }
-        );
-
-        reveals.forEach((element) => observer.observe(element));
-      }
-
-    </script>
   </body>
 </html>

@@ -1,0 +1,101 @@
+---
+import Base from "../layouts/Base.astro";
+
+const projects = [
+  {
+    name: "Plant-Pal",
+    description: "Giving a houseplant a voice through a small sensor and a little AI.",
+    href: "https://github.com/Peter-Phi-Tran/Plant-Pal",
+    linkLabel: "View code",
+  },
+  {
+    name: "Serapis",
+    description: "A patient management system built while learning the shape of a production backend.",
+  },
+  {
+    name: "Tachyon",
+    description: "A conversational way to explore the tradeoffs behind car financing.",
+    href: "https://devpost.com/software/tachyon-ruiz5h",
+    linkLabel: "View on Devpost",
+  },
+];
+---
+
+<Base title="Projects" description="Selected software projects by Peter Tran.">
+  <h1 class="page-title">Projects</h1>
+  <p class="page-intro">A few things I’ve built while following interesting problems.</p>
+
+  <ol class="project-list" role="list">
+    {projects.map((project) => (
+      <li>
+        <div>
+          <h2>{project.name}</h2>
+          <p>{project.description}</p>
+        </div>
+        {project.href && (
+          <a href={project.href}>{project.linkLabel}</a>
+        )}
+      </li>
+    ))}
+  </ol>
+</Base>
+
+<style>
+  .project-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .project-list li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 1.5rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .project-list li:first-child {
+    padding-top: 0.25rem;
+  }
+
+  .project-list li:last-child {
+    border-bottom: 0;
+  }
+
+  .project-list h2 {
+    margin: 0;
+    font-family: var(--font-utility);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .project-list p {
+    max-width: 34rem;
+    margin: 0.4rem 0 0;
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+  }
+
+  .project-list a {
+    padding-block: 0.25rem;
+    color: var(--pen);
+    font-size: 0.8rem;
+    font-weight: 650;
+    white-space: nowrap;
+  }
+
+  .project-list a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  @media (max-width: 540px) {
+    .project-list li {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+  }
+</style>
