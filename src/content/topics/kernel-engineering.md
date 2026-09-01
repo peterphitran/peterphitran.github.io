@@ -2,7 +2,6 @@
 title: "Kernel Engineering"
 summary: "Writing and optimizing the small, hot compute kernels (often on GPUs) that make ML and numerical workloads fast."
 status: "Exploring"
-updated: "2026-07-06"
 tags: ["systems", "ml", "performance"]
 ---
 

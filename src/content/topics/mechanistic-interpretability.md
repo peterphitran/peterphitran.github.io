@@ -2,7 +2,6 @@
 title: "Mechanistic Interpretability & Goodfire.ai"
 summary: "Reverse-engineering what neural networks actually compute, and the tooling (like Goodfire) that makes internals inspectable and steerable."
 status: "Exploring"
-updated: "2026-07-06"
 tags: ["ml", "interpretability", "safety"]
 ---
 

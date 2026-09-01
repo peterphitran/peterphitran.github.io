@@ -12,7 +12,7 @@ const { topic } = Astro.props;
 const { Content } = await topic.render();
 ---
 
-<Base title={topic.data.title} description={topic.data.summary}>
+<Base title={topic.data.title} description={topic.data.summary} reading>
   <p class="back"><a href="/topics">&#8592; back to topics</a></p>
   <article class="post">
     <h1 class="page-title">{topic.data.title}</h1>

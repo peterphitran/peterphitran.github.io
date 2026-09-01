@@ -2,7 +2,6 @@
 title: "Diffusion Models"
 summary: "Generative models that create data by learning to reverse a gradual noising process, behind most modern image generation and now text."
 status: "Exploring"
-updated: "2026-07-06"
 tags: ["ml", "generative", "theory"]
 ---
 

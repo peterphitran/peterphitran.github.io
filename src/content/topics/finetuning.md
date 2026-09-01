@@ -2,7 +2,6 @@
 title: "Finetuning"
 summary: "Adapting a pretrained model to a specific task or domain, from full finetuning to lightweight LoRA."
 status: "Exploring"
-updated: "2026-07-06"
 tags: ["ml", "llms", "training"]
 ---
 

@@ -5,20 +5,37 @@ import "../styles/scrollbar.css";
 import "@fontsource-variable/lora";
 import "@fontsource-variable/lora/wght-italic.css";
 import "@fontsource-variable/raleway";
+import type { ImageMetadata } from "astro";
+import matterhornImage from "../assets/matterhorn-hero-v1.png";
+import PageBackground from "../components/PageBackground.astro";
+import PageHero from "../components/PageHero.astro";
 import SiteNav from "../components/SiteNav.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+
+interface HeroOptions {
+  image: ImageMetadata;
+  intro: string;
+  position?: string;
+  mobilePosition?: string;
+  compact?: boolean;
+}
 
 interface Props {
   title: string;
   description?: string;
   wide?: boolean;
+  reading?: boolean;
+  hero?: HeroOptions;
 }
 
 const {
   title,
   description = "Peter Tran, a CS student at UT Arlington building software that survives the real world.",
   wide = false,
+  reading = false,
+  hero,
 } = Astro.props;
+const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin).toString();
 ---
 
 <html lang="en">
@@ -30,18 +47,43 @@ const {
     <meta name="theme-color" content="#0c4a49" />
     <meta property="og:title" content="Peter Tran" />
     <meta property="og:description" content={description} />
-    <!-- TODO: replace with a real social image in /public -->
-    <meta property="og:image" content="/og.png" />
+    <meta property="og:image" content={socialImage} />
   </head>
 
-  <body class="interior-page">
+  <body class:list={["interior-page", { "interior-page--backdrop": hero }]}>
     <a class="skip-link" href="#main-content">Skip to content</a>
-    <SiteNav />
-    <div class={wide ? "page page--wide" : "page"}>
+    {hero && (
+      <PageBackground
+        image={hero.image}
+        position={hero.position}
+        mobilePosition={hero.mobilePosition}
+      />
+    )}
+    {hero ? (
+      <PageHero
+        title={title}
+        intro={hero.intro}
+        wide={wide}
+        compact={hero.compact}
+      />
+    ) : (
+      <SiteNav compact={reading} />
+    )}
+    <div
+      class:list={[
+        "page",
+        {
+          "page--wide": wide,
+          "page--reading": reading,
+          "page--with-hero": hero,
+          "page--with-compact-hero": hero?.compact,
+        },
+      ]}
+    >
       <main id="main-content" tabindex="-1">
         <slot />
       </main>
     </div>
-    <SiteFooter />
+    <SiteFooter transparent={Boolean(hero)} />
   </body>
 </html>

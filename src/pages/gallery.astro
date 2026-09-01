@@ -3,6 +3,7 @@
 // up and ready: when you add entries, the empty state disappears and the
 // photo-book layout takes over automatically.
 import Base from "../layouts/Base.astro";
+import wetlandImage from "../assets/wetland-hero-v1.png";
 
 type Photo = { src: string; alt: string; caption: string; size?: "full" | "half" };
 
@@ -12,12 +13,18 @@ const photos: Photo[] = [
 ];
 ---
 
-<Base title="Gallery" description="Photos by Peter Tran." wide>
-  <h1 class="page-title">Gallery</h1>
-  <p class="page-intro">
-    Shots of whatever I point a camera at.
-  </p>
-
+<Base
+  title="Gallery"
+  description="Photos by Peter Tran."
+  wide
+  hero={{
+    image: wetlandImage,
+    intro: "Shots of whatever I point a camera at.",
+    position: "center",
+    mobilePosition: "44% center",
+    compact: true,
+  }}
+>
   {photos.length === 0 ? (
     <div class="empty">
       <p class="note">film still developing check back soon</p>

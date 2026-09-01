@@ -2,7 +2,6 @@
 title: "Edge Models"
 summary: "Running models on-device (phones, laptops, embedded) under tight memory, latency, and power budgets."
 status: "Exploring"
-updated: "2026-07-08"
 tags: ["ml", "systems", "local"]
 ---
 

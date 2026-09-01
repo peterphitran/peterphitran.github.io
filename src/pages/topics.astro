@@ -3,19 +3,24 @@
 // "topics" content collection (src/content/topics/).
 import Base from "../layouts/Base.astro";
 import { getCollection } from "astro:content";
+import butterflyImage from "../assets/butterfly-water-reflection-landscape-v1.png";
 
 const topics = (await getCollection("topics")).sort((a, b) =>
   a.data.title.localeCompare(b.data.title)
 );
 ---
 
-<Base title="Topics" description="Notes and topics Peter Tran is learning and writing about.">
-  <h1 class="page-title">Topics</h1>
-  <p class="page-intro">
-    A running table of contents, my archive of learning and
-    occasional write ups.
-  </p>
-
+<Base
+  title="Topics"
+  description="Notes and topics Peter Tran is learning and writing about."
+  hero={{
+    image: butterflyImage,
+    intro: "A running table of contents, my archive of learning and occasional write ups.",
+    position: "center",
+    mobilePosition: "66% center",
+    compact: true,
+  }}
+>
   <ol class="toc" role="list">
     {topics.map((t) => (
       <li>
@@ -40,10 +45,10 @@ const topics = (await getCollection("topics")).sort((a, b) =>
     counter-reset: toc;
   }
   .toc li {
-    padding: 1.4rem 0;
+    padding: 1.05rem 0;
     border-bottom: 1px solid var(--line);
   }
-  .toc li:first-child { padding-top: 0.25rem; }
+  .toc li:first-child { padding-top: 0; }
   .toc li:last-child { border-bottom: none; }
 
   .toc-row {

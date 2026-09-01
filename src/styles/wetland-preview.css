@@ -3,8 +3,10 @@
   --page-background: #0c4a49;
   --lagoon-950: #082f31;
   --lagoon-700: #155f5b;
-  --lichen: #a8c84a;
+  --lichen: #b7d7a5;
   --ivory: #fffdf4;
+  --pen: #b7d7a5;
+  --pen-strong: #d8e9cd;
   --display: "Lora Variable", Georgia, serif;
   --utility: "Raleway Variable", "Helvetica Neue", Arial, sans-serif;
 }
@@ -160,6 +162,7 @@ h1 {
 
 .hero h1 {
   margin: 0 0 1.5rem;
+  font-weight: 350;
   font-size: clamp(2.75rem, 5.4vw, 5.4rem);
   text-wrap: balance;
 }

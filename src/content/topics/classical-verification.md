@@ -2,7 +2,6 @@
 title: "Classical Verification"
 summary: "Verifying correctness empirically through testing, simulation, and coverage, the practical counterpart to formal (proof-based) verification."
 status: "Exploring"
-updated: "2026-07-06"
 tags: ["theory", "systems", "testing"]
 ---
 

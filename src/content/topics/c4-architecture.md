@@ -2,7 +2,6 @@
 title: "C4 Architecture"
 summary: "A lightweight model for visualizing software architecture at four zoom levels — Context, Containers, Components, and Code — so diagrams stay consistent and easy to follow."
 status: "Exploring"
-updated: "2026-07-08"
 tags: ["architecture", "systems", "documentation"]
 ---
 

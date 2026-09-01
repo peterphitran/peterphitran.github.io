@@ -2,7 +2,6 @@
 title: "CUDA Programming"
 summary: "Programming NVIDIA GPUs directly: the execution model, the memory hierarchy, and how to write and launch kernels."
 status: "Exploring"
-updated: "2026-07-06"
 tags: ["systems", "gpu", "performance"]
 ---
 

@@ -1,30 +1,21 @@
-# bun-react-tailwind-astro
+# Peter Tran's Portfolio
 
-To install dependencies:
+Personal portfolio and writing site built with Astro.
+
+## Development
+
+Use Node.js 22 or later.
 
 ```bash
 bun install
+bun run dev
 ```
 
-To start a development server:
+## Checks
 
 ```bash
-bun dev
+bun run lint
+node node_modules/astro/astro.js build
 ```
 
-To run for production:
-
-```bash
-bun start
-```
-
-This project was created using `bun init` in bun v1.3.6. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
-
-Inspo from
-- https://kasad.com/
-- https://youdahe.dev/index.html
-- https://www.kevindw.dev/
-
-Future Portfolio Inspo
-- https://mohitvirli.github.io/
-- https://www.madebynull.com/
+The site includes a landing page, project index, gallery, blog, and topic notes. Content lives in `src/content`; shared layouts, navigation, footer, and page-background components live in `src/components` and `src/layouts`.

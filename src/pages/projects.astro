@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import matterhornImage from "../assets/matterhorn-hero-v1.png";
 
 const projects = [
   {
@@ -21,10 +22,17 @@ const projects = [
 ];
 ---
 
-<Base title="Projects" description="Selected software projects by Peter Tran.">
-  <h1 class="page-title">Projects</h1>
-  <p class="page-intro">A few things I’ve built while following interesting problems.</p>
-
+<Base
+  title="Projects"
+  description="Selected software projects by Peter Tran."
+  hero={{
+    image: matterhornImage,
+    intro: "A few things I’ve built while following interesting problems.",
+    position: "68% center",
+    mobilePosition: "70% center",
+    compact: true,
+  }}
+>
   <ol class="project-list" role="list">
     {projects.map((project) => (
       <li>
@@ -52,12 +60,12 @@ const projects = [
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: start;
     gap: 1.5rem;
-    padding: 1.5rem 0;
+    padding: 1.05rem 0;
     border-bottom: 1px solid var(--line);
   }
 
   .project-list li:first-child {
-    padding-top: 0.25rem;
+    padding-top: 0;
   }
 
   .project-list li:last-child {

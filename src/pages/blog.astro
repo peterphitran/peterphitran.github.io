@@ -3,19 +3,24 @@
 // "blog" content collection (src/content/blog/).
 import Base from "../layouts/Base.astro";
 import { getCollection } from "astro:content";
+import balloonImage from "../assets/hot-air-balloons-clouds-landscape-v1.png";
 
 const posts = (await getCollection("blog")).sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
 );
 ---
 
-<Base title="Blog" description="Peter Tran's writing on software, projects, and open source.">
-  <h1 class="page-title">Blog</h1>
-  <p class="page-intro">
-    Notes from the jungle of software: what I'm building, what broke, and what
-    I learned along the way.
-  </p>
-
+<Base
+  title="Blog"
+  description="Peter Tran's writing on software, projects, and open source."
+  hero={{
+    image: balloonImage,
+    intro: "Notes from the jungle of software: what I'm building, what broke, and what I learned along the way.",
+    position: "center",
+    mobilePosition: "62% center",
+    compact: true,
+  }}
+>
   <ol class="ledger" role="list">
     {posts.map((post) => (
       <li>
@@ -43,10 +48,10 @@ const posts = (await getCollection("blog")).sort(
     display: grid;
     grid-template-columns: 70px 1fr;
     gap: 1.25rem;
-    padding: 1.4rem 0;
+    padding: 1.2rem 0;
     border-bottom: 1px solid var(--line);
   }
-  .ledger li:first-child { padding-top: 0.25rem; }
+  .ledger li:first-child { padding-top: 0; }
   .ledger li:last-child { border-bottom: none; }
   .ledger .meta { padding-top: 0.5em; }
 
@@ -56,6 +61,7 @@ const posts = (await getCollection("blog")).sort(
     margin: 0;
     font-family: var(--font-utility);
     letter-spacing: 0.01em;
+    line-height: 1.4;
   }
   .desc {
     font-size: 0.98rem;
@@ -65,6 +71,6 @@ const posts = (await getCollection("blog")).sort(
   }
 
   @media (max-width: 540px) {
-    .ledger li { grid-template-columns: 1fr; gap: 0.2rem; }
+    .ledger li { grid-template-columns: 1fr; gap: 0.35rem; }
   }
 </style>

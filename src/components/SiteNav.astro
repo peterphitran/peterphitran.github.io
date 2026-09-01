@@ -1,9 +1,10 @@
 ---
 interface Props {
   overlay?: boolean;
+  compact?: boolean;
 }
 
-const { overlay = false } = Astro.props;
+const { overlay = false, compact = false } = Astro.props;
 const path = Astro.url.pathname;
 const links = [
   { label: "Projects", href: "/projects" },
@@ -16,7 +17,12 @@ const current = (href: string) =>
   path === href || path.startsWith(`${href}/`) ? "page" : undefined;
 ---
 
-<header class:list={["portfolio-nav", { "portfolio-nav--overlay": overlay }]}>
+<header
+  class:list={[
+    "portfolio-nav",
+    { "portfolio-nav--overlay": overlay, "portfolio-nav--compact": compact },
+  ]}
+>
   <div class="portfolio-nav__inner">
     <a class="portfolio-nav__wordmark" href="/" aria-label="Peter Tran, home">
       Peter Tran
@@ -40,6 +46,10 @@ const current = (href: string) =>
 
   .portfolio-nav:not(.portfolio-nav--overlay) {
     margin-bottom: clamp(4rem, 9vw, 7rem);
+  }
+
+  .portfolio-nav--compact:not(.portfolio-nav--overlay) {
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
   }
 
   .portfolio-nav--overlay {
@@ -93,16 +103,16 @@ const current = (href: string) =>
   }
 
   nav a:hover {
-    color: #d7e69b;
+    color: var(--pen-strong);
   }
 
   nav a[aria-current="page"] {
-    border-bottom-color: #a8c84a;
+    border-bottom-color: var(--pen);
     color: #fffdf4;
   }
 
   :is(.portfolio-nav__wordmark, nav a):focus-visible {
-    outline: 2px solid #d7e69b;
+    outline: 2px solid var(--pen-strong);
     outline-offset: 3px;
     border-radius: 4px;
   }

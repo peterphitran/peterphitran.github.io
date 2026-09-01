@@ -1,0 +1,111 @@
+---
+import SiteNav from "./SiteNav.astro";
+
+interface Props {
+  title: string;
+  intro: string;
+  wide?: boolean;
+  compact?: boolean;
+}
+
+const { title, intro, wide = false, compact = false } = Astro.props;
+---
+
+<header
+  class:list={["page-hero", { "page-hero--compact": compact }]}
+  aria-labelledby="page-hero-title"
+>
+  <SiteNav overlay />
+
+  <div class:list={["page-hero__content", { "page-hero__content--wide": wide }]}>
+    <h1 id="page-hero-title">{title}</h1>
+    <p>{intro}</p>
+  </div>
+</header>
+
+<style>
+  .page-hero {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    min-height: clamp(31rem, 60svh, 42rem);
+    color: #fffdf4;
+  }
+
+  .page-hero__content {
+    align-self: end;
+    width: min(760px, calc(100% - 64px));
+    margin-inline: auto;
+    padding: 10rem 0 clamp(5.5rem, 10vw, 8rem);
+  }
+
+  .page-hero__content--wide {
+    width: min(1080px, calc(100% - 64px));
+  }
+
+  .page-hero--compact {
+    min-height: clamp(24rem, 46svh, 30rem);
+  }
+
+  .page-hero--compact .page-hero__content {
+    padding-bottom: 2.5rem;
+  }
+
+  h1 {
+    max-width: 760px;
+    margin: 0 0 0.75rem;
+    color: #fffdf4;
+    font-family: "Lora Variable", Georgia, serif;
+    font-size: clamp(3.2rem, 8vw, 6.25rem);
+    font-weight: 450;
+    letter-spacing: -0.05em;
+    line-height: 1.02;
+    text-shadow: 0 2px 24px rgba(3, 26, 28, 0.3);
+  }
+
+  p {
+    max-width: 38rem;
+    margin: 0;
+    color: rgba(255, 253, 244, 0.78);
+    font-family: "Lora Variable", Georgia, serif;
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 800px) {
+    .page-hero__content,
+    .page-hero__content--wide {
+      width: min(100% - 40px, 680px);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .page-hero {
+      min-height: max(36rem, 72svh);
+    }
+
+    .page-hero--compact {
+      min-height: max(29rem, 58svh);
+    }
+
+    .page-hero__content,
+    .page-hero__content--wide {
+      width: calc(100% - 32px);
+      padding-top: 9rem;
+      padding-bottom: 5.5rem;
+    }
+
+    .page-hero--compact .page-hero__content {
+      padding-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: clamp(3rem, 15vw, 4.4rem);
+    }
+
+    p {
+      max-width: 30rem;
+      font-size: 1rem;
+    }
+  }
+</style>

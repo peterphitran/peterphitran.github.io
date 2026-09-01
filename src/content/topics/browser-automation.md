@@ -2,7 +2,6 @@
 title: "Browser Automation"
 summary: "Driving a real web browser programmatically for testing, scraping, and increasingly for AI agents that navigate the web."
 status: "Exploring"
-updated: "2026-07-06"
 tags: ["systems", "testing", "agents"]
 ---
 

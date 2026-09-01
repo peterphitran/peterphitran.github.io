@@ -15,7 +15,6 @@ const topics = defineCollection({
         title: z.string(),
         summary: z.string(),
         status: z.string().default('Exploring'),
-        updated: z.string().optional(),
         tags: z.array(z.string()).default([]),
     }),
 });

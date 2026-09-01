@@ -2,7 +2,6 @@
 title: "Small Language Models"
 summary: "Compact language models (often a few billion parameters or fewer) that trade scale for speed, low cost, and on-device use, while staying surprisingly capable."
 status: "Exploring"
-updated: "2026-07-08"
 tags: ["ml", "llms", "local"]
 ---
 

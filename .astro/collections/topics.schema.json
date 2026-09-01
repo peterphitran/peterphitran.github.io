@@ -14,9 +14,6 @@
           "type": "string",
           "default": "Exploring"
         },
-        "updated": {
-          "type": "string"
-        },
         "tags": {
           "type": "array",
           "items": {

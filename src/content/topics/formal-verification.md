@@ -2,7 +2,6 @@
 title: "Formal Verification"
 summary: "Proving software and hardware correct against a specification, instead of only testing for bugs."
 status: "Exploring"
-updated: "2026-07-06"
 tags: ["theory", "systems", "safety"]
 ---
 

@@ -2,7 +2,6 @@
 title: "Shor's Algorithm"
 summary: "A quantum algorithm that factors large integers in polynomial time, threatening the RSA encryption that secures much of the internet."
 status: "Exploring"
-updated: "2026-07-08"
 tags: ["quantum", "cryptography"]
 ---
 

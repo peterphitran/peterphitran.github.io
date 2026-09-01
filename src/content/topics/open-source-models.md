@@ -2,7 +2,6 @@
 title: "Open Source Models"
 summary: "Openly available model weights (Llama, Mistral, Qwen, Gemma, DeepSeek) and the licenses and ecosystems around them."
 status: "Exploring"
-updated: "2026-07-08"
 tags: ["ml", "llms", "ecosystem"]
 ---
 
