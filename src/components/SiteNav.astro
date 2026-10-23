@@ -78,7 +78,7 @@ const menuBackdrop = await getImage({
     </nav>
   </dialog>
 </header>
-<script is:inline>document.currentScript.previousElementSibling.classList.add("portfolio-nav--js");</script>
+<script is:inline>if (window.HTMLDialogElement) document.currentScript.previousElementSibling.classList.add("portfolio-nav--js");</script>
 
 <script>
   const nav = document.querySelector<HTMLElement>("[data-site-nav]");
@@ -98,7 +98,7 @@ const menuBackdrop = await getImage({
       toggle.setAttribute("aria-expanded", "true");
       document.documentElement.style.overflow = "hidden";
       const rect = toggle.getBoundingClientRect();
-      closeButton.style.top = `${rect.top}px`;
+      closeButton.style.top = `${Math.max(rect.top, 0)}px`;
       closeButton.style.right = `${window.innerWidth - rect.right}px`;
       closeButton.style.height = `${rect.height}px`;
       menuLinks()[0]?.focus();
