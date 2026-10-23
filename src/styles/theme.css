@@ -20,10 +20,11 @@
   --moss-deep: #d8e9cd;
 
   /* type */
-  --font-display: "Lora Variable", Georgia, serif;
-  --font-body: "Raleway Variable", "Helvetica Neue", Arial, sans-serif;
-  --font-hand: "Lora Variable", Georgia, serif;
-  --font-utility: "Raleway Variable", "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Ysabeau Variable", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Ysabeau Office Variable", "Helvetica Neue", Arial, sans-serif;
+  --font-hand: "Ysabeau Variable", "Helvetica Neue", Arial, sans-serif;
+  --font-utility: "Ysabeau Office Variable", "Helvetica Neue", Arial, sans-serif;
+  --font-caps: "Ysabeau SC Variable", "Helvetica Neue", Arial, sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -127,8 +128,8 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
 
 .page-title {
   font-size: clamp(3rem, 8vw, 5.4rem);
-  font-weight: 450;
-  letter-spacing: -0.045em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   line-height: 1.05;
   margin: 0 0 0.75rem;
 }
@@ -144,12 +145,11 @@ a:focus-visible, button:focus-visible, summary:focus-visible {
   line-height: 1.65;
 }
 
-/* dates & metadata: small caps in the utility sans */
+/* dates & metadata: true small caps */
 .meta {
-  font-family: var(--font-utility);
-  font-size: 0.75rem;
+  font-family: var(--font-caps);
+  font-size: 0.85rem;
   letter-spacing: 0.09em;
-  text-transform: uppercase;
   color: var(--ink-faint);
 }
 

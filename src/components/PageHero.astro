@@ -55,10 +55,10 @@ const { title, intro, wide = false, compact = false } = Astro.props;
     max-width: 760px;
     margin: 0 0 0.75rem;
     color: #fffdf4;
-    font-family: "Lora Variable", Georgia, serif;
+    font-family: var(--font-display);
     font-size: clamp(3.2rem, 8vw, 6.25rem);
-    font-weight: 450;
-    letter-spacing: -0.05em;
+    font-weight: 600;
+    letter-spacing: -0.01em;
     line-height: 1.02;
     text-shadow: 0 2px 24px rgba(3, 26, 28, 0.3);
   }
@@ -67,7 +67,7 @@ const { title, intro, wide = false, compact = false } = Astro.props;
     max-width: 38rem;
     margin: 0;
     color: rgba(255, 253, 244, 0.78);
-    font-family: "Lora Variable", Georgia, serif;
+    font-family: var(--font-display);
     font-size: clamp(1.05rem, 2vw, 1.25rem);
     line-height: 1.6;
   }
