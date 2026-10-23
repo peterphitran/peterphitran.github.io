@@ -63,56 +63,59 @@ const menuBackdrop = await getImage({
     </button>
   </div>
 
-  <div
+  <dialog
     id="site-menu"
     class="site-menu"
+    aria-label="Site menu"
     style={`--menu-backdrop: url("${menuBackdrop.src}")`}
     data-menu
-    hidden
   >
+    <button class="site-menu__close" type="button" aria-label="Close menu" data-menu-close>close</button>
     <nav aria-label="Menu">
       {links.map((link) => (
         <a href={link.href} aria-current={current(link.href)}>{link.label}</a>
       ))}
     </nav>
-  </div>
+  </dialog>
 </header>
+<script is:inline>document.currentScript.previousElementSibling.classList.add("portfolio-nav--js");</script>
 
 <script>
   const nav = document.querySelector<HTMLElement>("[data-site-nav]");
   const toggle = nav?.querySelector<HTMLButtonElement>("[data-menu-toggle]");
-  const menu = nav?.querySelector<HTMLElement>("[data-menu]");
+  const menu = nav?.querySelector<HTMLDialogElement>("[data-menu]");
+  const closeButton = menu?.querySelector<HTMLButtonElement>("[data-menu-close]");
 
-  if (nav && toggle && menu) {
+  if (nav && toggle && menu && closeButton) {
     const phone = window.matchMedia("(max-width: 560px)");
     const menuLinks = () => Array.from(menu.querySelectorAll<HTMLAnchorElement>("a"));
+    let closedByLink = false;
 
-    const setOpen = (open: boolean, restoreFocus = true) => {
-      menu.hidden = !open;
-      toggle.setAttribute("aria-expanded", String(open));
-      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
-      toggle.textContent = open ? "close" : "menu";
-      document.documentElement.style.overflow = open ? "hidden" : "";
-      if (open) menuLinks()[0]?.focus();
-      else if (restoreFocus) toggle.focus();
-    };
-
-    nav.classList.add("portfolio-nav--js");
-
-    toggle.addEventListener("click", () => setOpen(menu.hidden));
-
-    menu.addEventListener("click", (event) => {
-      if ((event.target as Element).closest("a")) setOpen(false, false);
+    toggle.addEventListener("click", () => {
+      if (menu.open) return;
+      closedByLink = false;
+      menu.showModal();
+      toggle.setAttribute("aria-expanded", "true");
+      document.documentElement.style.overflow = "hidden";
+      const rect = toggle.getBoundingClientRect();
+      closeButton.style.top = `${rect.top}px`;
+      closeButton.style.right = `${window.innerWidth - rect.right}px`;
+      closeButton.style.height = `${rect.height}px`;
+      menuLinks()[0]?.focus();
     });
 
-    document.addEventListener("keydown", (event) => {
-      if (menu.hidden) return;
-      if (event.key === "Escape") {
-        setOpen(false);
-        return;
+    closeButton.addEventListener("click", () => menu.close());
+
+    menu.addEventListener("click", (event) => {
+      if ((event.target as Element).closest("a")) {
+        closedByLink = true;
+        menu.close();
       }
+    });
+
+    menu.addEventListener("keydown", (event) => {
       if (event.key !== "Tab") return;
-      const items = [toggle, ...menuLinks()];
+      const items = [closeButton, ...menuLinks()];
       const first = items[0];
       const last = items[items.length - 1];
       if (event.shiftKey && document.activeElement === first) {
@@ -124,8 +127,15 @@ const menuBackdrop = await getImage({
       }
     });
 
+    menu.addEventListener("close", () => {
+      toggle.setAttribute("aria-expanded", "false");
+      document.documentElement.style.overflow = "";
+      if (!closedByLink) toggle.focus();
+      closedByLink = false;
+    });
+
     phone.addEventListener("change", (event) => {
-      if (!event.matches && !menu.hidden) setOpen(false, false);
+      if (!event.matches && menu.open) menu.close();
     });
   }
 </script>
@@ -209,8 +219,6 @@ const menuBackdrop = await getImage({
   }
 
   .portfolio-nav__toggle {
-    position: relative;
-    z-index: 31;
     display: none;
     min-height: 44px;
     margin-left: auto;
@@ -224,7 +232,7 @@ const menuBackdrop = await getImage({
     cursor: pointer;
   }
 
-  :is(.portfolio-nav__wordmark, .portfolio-nav__links a, .portfolio-nav__toggle, .site-menu a):focus-visible {
+  :is(.portfolio-nav__wordmark, .portfolio-nav__links a, .portfolio-nav__toggle, .site-menu__close, .site-menu a):focus-visible {
     outline: 2px solid var(--pen-strong);
     outline-offset: 3px;
     border-radius: 4px;
@@ -232,19 +240,43 @@ const menuBackdrop = await getImage({
 
   .site-menu {
     position: fixed;
-    z-index: 30;
     inset: 0;
-    display: flex;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    border: 0;
     align-items: flex-end;
     padding: 0 20px calc(3rem + env(safe-area-inset-bottom, 0px));
     overflow: hidden;
     background: #0c4a49;
+    color: #fffdf4;
     isolation: isolate;
     animation: site-menu-in 160ms ease both;
   }
 
-  .site-menu[hidden] {
-    display: none;
+  .site-menu[open] {
+    display: flex;
+  }
+
+  .site-menu::backdrop {
+    background: transparent;
+  }
+
+  .site-menu__close {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 0.25rem;
+    border: 0;
+    background: none;
+    color: #fffdf4;
+    font: inherit;
+    font-size: 0.95rem;
+    letter-spacing: 0.14em;
+    cursor: pointer;
   }
 
   .site-menu::before {
