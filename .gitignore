@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 notes.txt
+# Brainstorming companion mockups and specs
+.superpowers/
