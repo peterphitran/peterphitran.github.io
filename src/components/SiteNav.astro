@@ -1,39 +1,134 @@
 ---
+import { getImage } from "astro:assets";
+import matterhornImage from "../assets/matterhorn-hero-v1.png";
+
 interface Props {
   overlay?: boolean;
   compact?: boolean;
+  variant?: "default" | "links-only";
 }
 
-const { overlay = false, compact = false } = Astro.props;
+const { overlay = false, compact = false, variant = "default" } = Astro.props;
 const path = Astro.url.pathname;
 const links = [
-  { label: "Projects", href: "/projects" },
-  { label: "Gallery", href: "/gallery" },
-  { label: "Blog", href: "/blog" },
-  { label: "Topics", href: "/topics" },
+  { label: "projects", href: "/projects" },
+  { label: "gallery", href: "/gallery" },
+  { label: "blog", href: "/blog" },
+  { label: "topics", href: "/topics" },
 ];
 
 const current = (href: string) =>
   path === href || path.startsWith(`${href}/`) ? "page" : undefined;
+
+// Small, blurred copy of the painting behind the phone menu.
+const menuBackdrop = await getImage({
+  src: matterhornImage,
+  width: 640,
+  format: "webp",
+  quality: 60,
+});
 ---
 
 <header
   class:list={[
     "portfolio-nav",
-    { "portfolio-nav--overlay": overlay, "portfolio-nav--compact": compact },
+    {
+      "portfolio-nav--overlay": overlay,
+      "portfolio-nav--compact": compact,
+      "portfolio-nav--links-only": variant === "links-only",
+    },
   ]}
+  data-site-nav
 >
   <div class="portfolio-nav__inner">
-    <a class="portfolio-nav__wordmark" href="/" aria-label="Peter Tran, home">
-      Peter Tran
-    </a>
-    <nav aria-label="Primary navigation">
+    {variant === "default" && (
+      <a class="portfolio-nav__wordmark" href="/" aria-label="Peter Tran, home">
+        peter tran
+      </a>
+    )}
+    <nav class="portfolio-nav__links" aria-label="Primary navigation">
+      {links.map((link) => (
+        <a href={link.href} aria-current={current(link.href)}>{link.label}</a>
+      ))}
+    </nav>
+    <button
+      class="portfolio-nav__toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls="site-menu"
+      aria-label="Open menu"
+      data-menu-toggle
+    >
+      menu
+    </button>
+  </div>
+
+  <div
+    id="site-menu"
+    class="site-menu"
+    style={`--menu-backdrop: url("${menuBackdrop.src}")`}
+    data-menu
+    hidden
+  >
+    <nav aria-label="Menu">
       {links.map((link) => (
         <a href={link.href} aria-current={current(link.href)}>{link.label}</a>
       ))}
     </nav>
   </div>
 </header>
+
+<script>
+  const nav = document.querySelector<HTMLElement>("[data-site-nav]");
+  const toggle = nav?.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+  const menu = nav?.querySelector<HTMLElement>("[data-menu]");
+
+  if (nav && toggle && menu) {
+    const phone = window.matchMedia("(max-width: 560px)");
+    const menuLinks = () => Array.from(menu.querySelectorAll<HTMLAnchorElement>("a"));
+
+    const setOpen = (open: boolean, restoreFocus = true) => {
+      menu.hidden = !open;
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+      toggle.textContent = open ? "close" : "menu";
+      document.documentElement.style.overflow = open ? "hidden" : "";
+      if (open) menuLinks()[0]?.focus();
+      else if (restoreFocus) toggle.focus();
+    };
+
+    nav.classList.add("portfolio-nav--js");
+
+    toggle.addEventListener("click", () => setOpen(menu.hidden));
+
+    menu.addEventListener("click", (event) => {
+      if ((event.target as Element).closest("a")) setOpen(false, false);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (menu.hidden) return;
+      if (event.key === "Escape") {
+        setOpen(false);
+        return;
+      }
+      if (event.key !== "Tab") return;
+      const items = [toggle, ...menuLinks()];
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    phone.addEventListener("change", (event) => {
+      if (!event.matches && !menu.hidden) setOpen(false, false);
+    });
+  }
+</script>
 
 <style>
   .portfolio-nav {
@@ -42,6 +137,9 @@ const current = (href: string) =>
     width: 100%;
     padding-top: env(safe-area-inset-top, 0px);
     color: #fffdf4;
+    font-family: "Ysabeau SC Variable", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.14em;
   }
 
   .portfolio-nav:not(.portfolio-nav--overlay) {
@@ -70,51 +168,131 @@ const current = (href: string) =>
     border-bottom: 1px solid rgba(255, 253, 244, 0.18);
   }
 
+  .portfolio-nav--links-only .portfolio-nav__inner {
+    justify-content: center;
+    border-bottom-color: transparent;
+  }
+
   .portfolio-nav__wordmark {
     display: inline-flex;
     min-height: 44px;
     align-items: center;
     color: #fffdf4;
-    font-family: "Lora Variable", Georgia, serif;
-    font-size: 1.2rem;
-    font-style: italic;
-    font-weight: 550;
-    letter-spacing: -0.02em;
+    font-size: 0.95rem;
     text-decoration: none;
   }
 
-  nav {
+  .portfolio-nav__links {
     display: flex;
     align-items: center;
-    gap: 1.4rem;
-    font-family: "Raleway Variable", "Helvetica Neue", Arial, sans-serif;
+    gap: 1.6rem;
     font-size: 0.85rem;
-    letter-spacing: 0.02em;
   }
 
-  nav a {
+  .portfolio-nav__links a {
     display: inline-flex;
     min-height: 44px;
     align-items: center;
     border-bottom: 1px solid transparent;
-    color: rgba(255, 253, 244, 0.78);
+    color: rgba(255, 253, 244, 0.82);
     text-decoration: none;
     transition: border-color 160ms ease, color 160ms ease;
   }
 
-  nav a:hover {
+  .portfolio-nav__links a:hover {
     color: var(--pen-strong);
   }
 
-  nav a[aria-current="page"] {
+  .portfolio-nav__links a[aria-current="page"] {
     border-bottom-color: var(--pen);
     color: #fffdf4;
   }
 
-  :is(.portfolio-nav__wordmark, nav a):focus-visible {
+  .portfolio-nav__toggle {
+    position: relative;
+    z-index: 31;
+    display: none;
+    min-height: 44px;
+    margin-left: auto;
+    padding: 0 0.25rem;
+    border: 0;
+    background: none;
+    color: #fffdf4;
+    font: inherit;
+    font-size: 0.95rem;
+    letter-spacing: inherit;
+    cursor: pointer;
+  }
+
+  :is(.portfolio-nav__wordmark, .portfolio-nav__links a, .portfolio-nav__toggle, .site-menu a):focus-visible {
     outline: 2px solid var(--pen-strong);
     outline-offset: 3px;
     border-radius: 4px;
+  }
+
+  .site-menu {
+    position: fixed;
+    z-index: 30;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 20px calc(3rem + env(safe-area-inset-bottom, 0px));
+    overflow: hidden;
+    background: #0c4a49;
+    isolation: isolate;
+    animation: site-menu-in 160ms ease both;
+  }
+
+  .site-menu[hidden] {
+    display: none;
+  }
+
+  .site-menu::before {
+    position: absolute;
+    z-index: -2;
+    inset: -32px;
+    background: var(--menu-backdrop) 74% center / cover no-repeat;
+    content: "";
+    filter: blur(12px);
+  }
+
+  .site-menu::after {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: rgba(5, 30, 32, 0.55);
+    content: "";
+  }
+
+  .site-menu nav {
+    display: flex;
+    flex-direction: column;
+    font-size: 1.5rem;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    line-height: 1.55;
+  }
+
+  .site-menu a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    color: #fffdf4;
+    text-decoration: none;
+  }
+
+  .site-menu a[aria-current="page"] {
+    color: var(--pen, #b7d7a5);
+  }
+
+  @keyframes site-menu-in {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
   }
 
   @media (max-width: 800px) {
@@ -134,21 +312,42 @@ const current = (href: string) =>
       gap: 0.1rem;
     }
 
-    nav {
+    .portfolio-nav__links {
       width: 100%;
       flex-wrap: wrap;
       gap: 0.2rem 1.3rem;
       font-size: 0.8rem;
     }
 
-    nav a {
-      min-height: 44px;
+    .portfolio-nav--js .portfolio-nav__inner {
+      min-height: 72px;
+      padding-block: 0;
+      align-items: center;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .portfolio-nav--js.portfolio-nav--links-only .portfolio-nav__inner {
+      justify-content: flex-end;
+    }
+
+    .portfolio-nav--js .portfolio-nav__links {
+      display: none;
+    }
+
+    .portfolio-nav--js .portfolio-nav__toggle {
+      display: inline-flex;
+      align-items: center;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    nav a {
+    .portfolio-nav__links a {
       transition: none;
+    }
+
+    .site-menu {
+      animation: none;
     }
   }
 </style>
