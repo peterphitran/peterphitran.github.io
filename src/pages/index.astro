@@ -3,9 +3,9 @@ import { Image } from "astro:assets";
 import SiteNav from "../components/SiteNav.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 import matterhornImage from "../assets/matterhorn-hero-v1.png";
-import "@fontsource-variable/lora";
-import "@fontsource-variable/lora/wght-italic.css";
-import "@fontsource-variable/raleway";
+import "@fontsource-variable/ysabeau";
+import "@fontsource-variable/ysabeau-office";
+import "@fontsource-variable/ysabeau-sc";
 import "../styles/wetland-preview.css";
 import "../styles/scrollbar.css";
 
@@ -51,31 +51,15 @@ const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin)
       />
       <div class="hero__veil" aria-hidden="true"></div>
 
-      <SiteNav overlay />
+      <SiteNav overlay variant="links-only" />
 
       <main id="main-content" class="hero__content shell" tabindex="-1">
-        <h1 id="hero-title">Software engineer and computer science researcher.</h1>
-        <p class="hero__lede">
-          I study computer science with a mathematics minor at UT Arlington.
-          Currently conducting deep learning undergraduate research with DIAL Labs on inductive
-          graph link prediction.
+        <h1 id="hero-title">Peter Tran</h1>
+        <p class="hero__title">Software engineer &amp; CS researcher, UT Arlington</p>
+        <p class="hero__summary">
+          Graph link prediction research with DIAL Labs. Previously JP Morgan Chase, Aereos,
+          Mansfield ISD.
         </p>
-        <div class="hero__details">
-          <p>
-            former swe intern at <strong>JP Morgan Chase</strong> focused on agentic workflow
-            development & infrastructure.
-          </p>
-          <p>
-            previously a sde intern at <strong>Aereos</strong> building cloud infrastructure & IoT
-            firmware.
-          </p>
-          <p>
-            started as an it intern at <strong>Mansfield ISD Technology</strong> working on software
-            and hardware troubleshooting.
-          </p>
-          <p>I’m interested in AI, distributed systems, infrastructure, and developer tools.</p>
-          <p>Outside of software, I run, play volleyball, and take photos.</p>
-        </div>
       </main>
     </div>
 

@@ -7,8 +7,8 @@
   --ivory: #fffdf4;
   --pen: #b7d7a5;
   --pen-strong: #d8e9cd;
-  --display: "Lora Variable", Georgia, serif;
-  --utility: "Raleway Variable", "Helvetica Neue", Arial, sans-serif;
+  --display: "Ysabeau Variable", "Helvetica Neue", Arial, sans-serif;
+  --utility: "Ysabeau Office Variable", "Helvetica Neue", Arial, sans-serif;
 }
 
 * {
@@ -64,9 +64,9 @@ p {
 h1 {
   color: inherit;
   font-family: var(--display);
-  font-weight: 420;
-  letter-spacing: -0.06em;
-  line-height: 1.08;
+  font-weight: 700;
+  letter-spacing: 0.005em;
+  line-height: 1.05;
 }
 
 .shell {
@@ -113,23 +113,14 @@ h1 {
   animation: hero-settle 1.6s cubic-bezier(0.2, 0.75, 0.2, 1) both;
 }
 
+/* Two soft layers only: a top band for the nav, a corner shade for the text. */
 .hero__veil {
   position: absolute;
   z-index: -2;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(4, 28, 30, 0.68) 0%, rgba(4, 28, 30, 0.46) 104px, rgba(4, 28, 30, 0) 190px),
-    linear-gradient(90deg, rgba(5, 35, 38, 0.92) 0%, rgba(5, 40, 42, 0.77) 29%, rgba(7, 44, 43, 0.23) 61%, rgba(7, 31, 28, 0.08) 100%),
-    linear-gradient(0deg, rgba(5, 33, 34, 0.48) 0%, rgba(5, 33, 34, 0) 42%);
-}
-
-.hero::before {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  background: radial-gradient(circle at 55% 42%, transparent 25%, rgba(3, 26, 28, 0.22) 100%);
-  content: "";
-  pointer-events: none;
+    linear-gradient(180deg, rgba(5, 33, 34, 0.45) 0%, transparent 20%),
+    linear-gradient(25deg, rgba(5, 30, 32, 0.82) 0%, rgba(5, 30, 32, 0.35) 35%, transparent 55%);
 }
 
 .hero::after {
@@ -151,45 +142,36 @@ h1 {
 }
 
 .hero__content {
-  align-self: center;
+  align-self: end;
   padding-top: 7.75rem;
-  padding-bottom: 7.5rem;
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
 .hero__content > * {
-  max-width: 680px;
+  max-width: 36rem;
 }
 
 .hero h1 {
-  margin: 0 0 1.5rem;
-  font-weight: 350;
-  font-size: clamp(2.75rem, 5.4vw, 5.4rem);
-  text-wrap: balance;
+  margin: 0 0 0.5rem;
+  font-size: clamp(3rem, 6vw, 5.5rem);
 }
 
-.hero__lede {
-  margin-bottom: 1.4rem;
-  color: rgba(255, 253, 244, 0.86);
+.hero__title {
+  margin-bottom: 0.75rem;
+  color: rgba(255, 253, 244, 0.88);
   font-family: var(--display);
-  font-size: clamp(1rem, 1.5vw, 1.18rem);
-  line-height: 1.6;
+  font-size: clamp(1.05rem, 1.6vw, 1.4rem);
+  font-weight: 500;
+  letter-spacing: 0.015em;
+  line-height: 1.35;
 }
 
-.hero strong {
-  color: var(--ivory);
-  font-weight: 700;
-}
-
-.hero__details {
-  display: grid;
-  gap: 0.55rem;
-  color: rgba(255, 253, 244, 0.68);
-  font-size: 0.88rem;
-  line-height: 1.55;
-}
-
-.hero__details p {
+.hero__summary {
   margin-bottom: 0;
+  color: rgba(255, 253, 244, 0.74);
+  font-family: var(--utility);
+  font-size: clamp(0.95rem, 1.1vw, 1.1rem);
+  line-height: 1.6;
 }
 
 @keyframes hero-settle {
@@ -209,28 +191,8 @@ h1 {
     width: min(100% - 40px, 680px);
   }
 
-  .hero {
-    min-height: min(840px, 94svh);
-  }
-
   .hero__art {
     object-position: 70% center;
-  }
-
-  .hero__veil {
-    background:
-      linear-gradient(180deg, rgba(4, 28, 30, 0.72) 0%, rgba(4, 28, 30, 0.48) 86px, rgba(4, 28, 30, 0) 154px),
-      linear-gradient(90deg, rgba(5, 35, 38, 0.88), rgba(5, 39, 40, 0.51)),
-      linear-gradient(0deg, rgba(4, 30, 31, 0.62), rgba(5, 33, 34, 0.1) 55%);
-  }
-
-  .hero__content {
-    padding-top: 8rem;
-    padding-bottom: 7rem;
-  }
-
-  .hero h1 {
-    font-size: clamp(2.8rem, 10vw, 4.8rem);
   }
 }
 
@@ -240,32 +202,36 @@ h1 {
   }
 
   .hero {
-    min-height: max(1100px, 125svh);
+    min-height: 100svh;
   }
 
   .hero__art {
-    object-position: 72% center;
+    object-position: 74% center;
+  }
+
+  .hero__veil {
+    background:
+      linear-gradient(180deg, rgba(5, 33, 34, 0.5) 0%, transparent 18%),
+      linear-gradient(0deg, rgba(5, 30, 32, 0.88) 0%, rgba(5, 30, 32, 0.4) 35%, transparent 55%);
   }
 
   .hero__content {
-    align-self: start;
-    padding-top: 13.75rem;
-    padding-bottom: 7rem;
+    padding-top: 6rem;
+    padding-bottom: 1.75rem;
   }
 
   .hero h1 {
-    margin-bottom: 1.25rem;
-    font-size: clamp(2.6rem, 12vw, 3.8rem);
-    line-height: 1.04;
+    margin-bottom: 0.4rem;
+    font-size: 2.75rem;
   }
 
-  .hero__lede {
-    font-size: 0.98rem;
+  .hero__title {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
   }
 
-  .hero__details {
-    gap: 0.45rem;
-    font-size: 0.82rem;
+  .hero__summary {
+    font-size: 0.9rem;
   }
 }
 
