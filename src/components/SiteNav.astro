@@ -260,6 +260,11 @@ const menuBackdrop = await getImage({
     display: flex;
   }
 
+  /* Browsers without <dialog> support would otherwise show the fixed panel. */
+  .site-menu:not([open]) {
+    display: none;
+  }
+
   .site-menu::backdrop {
     background: transparent;
   }

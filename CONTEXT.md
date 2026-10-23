@@ -40,7 +40,7 @@ bun run lint        # ESLint
 - **Build must use WSL + Node 24.14.1**: run via `wsl bash -c ". /home/ptran/.nvm/nvm.sh; nvm use 24.14.1; cd /mnt/c/.../portfolio && ~/.bun/bin/bun run build"`
 - Astro 5 content collection `id` includes the `.md` extension — strip it when building URLs (`post.id.replace(/\.md$/, '')`).
 - `bun add/remove` run from **Windows** rewrites `node_modules/.bin` with Windows shims, so `bun run build` then fails in WSL (`astro: command not found`). Use `~/.bun/bin/bun node_modules/astro/astro.js build` (and `... preview`) in WSL.
-- No test suite configured. Browser checks: `wsl bash /mnt/c/Users/ptran/Downloads/Projects/portfolio/.superpowers/verify/run-verify.sh` from **PowerShell** (Git Bash mangles `/mnt/c`); Playwright lives in WSL `~/portfolio-verify`.
+- No test suite configured. Browser checks: `wsl bash /mnt/c/Users/ptran/Downloads/Projects/portfolio/.superpowers/verify/run-verify.sh` from **PowerShell** (Git Bash mangles `/mnt/c`); Playwright lives in WSL `~/portfolio-verify`. Note: `.superpowers/` is gitignored, so these scripts exist only on this machine, not in the repo. The script uses port 4399 because other projects (e.g. `website/`) run `astro preview` on 4321, and Astro silently picks another port when 4321 is busy.
 
 ---
 
