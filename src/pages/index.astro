@@ -51,14 +51,18 @@ const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin)
       />
       <div class="hero__veil" aria-hidden="true"></div>
 
-      <SiteNav overlay variant="links-only" />
+      <SiteNav overlay showHome={false} />
 
       <main id="main-content" class="hero__content shell" tabindex="-1">
         <h1 id="hero-title">Peter Tran</h1>
-        <p class="hero__title">Software engineer &amp; CS researcher, UT Arlington</p>
+        <p class="hero__title">Computer Science &amp; Mathematics, UT Arlington</p>
         <p class="hero__summary">
           Graph link prediction research with DIAL Labs. Previously JP Morgan Chase, Aereos,
           Mansfield ISD.
+        </p>
+        <p class="hero__summary">
+          My current interests are inference engineering, reinforcement learning, mechinterp,
+          multimodal ai security, and translational bioinformatics.
         </p>
       </main>
     </div>
