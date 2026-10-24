@@ -1,6 +1,5 @@
 ---
 import Base from "../layouts/Base.astro";
-import matterhornImage from "../assets/matterhorn-hero-v1.png";
 
 const projects = [
   {
@@ -26,11 +25,9 @@ const projects = [
   title="Projects"
   description="Selected software projects by Peter Tran."
   hero={{
-    image: matterhornImage,
     intro: "A few things I’ve built while following interesting problems.",
-    position: "68% center",
-    mobilePosition: "70% center",
     compact: true,
+    wash: 0,
   }}
 >
   <ol class="project-list" role="list">

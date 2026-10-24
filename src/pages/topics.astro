@@ -3,7 +3,6 @@
 // "topics" content collection (src/content/topics/).
 import Base from "../layouts/Base.astro";
 import { getCollection } from "astro:content";
-import butterflyImage from "../assets/butterfly-water-reflection-landscape-v1.png";
 
 const topics = (await getCollection("topics")).sort((a, b) =>
   a.data.title.localeCompare(b.data.title)
@@ -14,11 +13,9 @@ const topics = (await getCollection("topics")).sort((a, b) =>
   title="Topics"
   description="Notes and topics Peter Tran is learning and writing about."
   hero={{
-    image: butterflyImage,
     intro: "A running table of contents, my archive of learning and occasional write ups.",
-    position: "center",
-    mobilePosition: "66% center",
     compact: true,
+    wash: 3,
   }}
 >
   <ol class="toc" role="list">

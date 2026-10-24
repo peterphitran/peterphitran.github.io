@@ -1,20 +1,42 @@
 ---
+import { getImage } from "astro:assets";
 import SiteNav from "./SiteNav.astro";
+import matterhornImage from "../assets/matterhorn-hero-v1.png";
 
 interface Props {
   title: string;
   intro: string;
   wide?: boolean;
   compact?: boolean;
+  wash?: number;
 }
 
-const { title, intro, wide = false, compact = false } = Astro.props;
+const { title, intro, wide = false, compact = false, wash = 0 } = Astro.props;
+
+// Each page washes a different area of the landing painting into soft color:
+// the summit, the forest slope, the sunlit sky, the snowy face.
+const washPositions = ["72% 8%", "98% 96%", "100% 0%", "62% 52%"];
+const washPosition = washPositions[Math.abs(wash) % washPositions.length];
+
+// Heavily blurred, so a small copy is plenty.
+const washImage = await getImage({
+  src: matterhornImage,
+  width: 960,
+  format: "webp",
+  quality: 60,
+});
 ---
 
 <header
   class:list={["page-hero", { "page-hero--compact": compact }]}
   aria-labelledby="page-hero-title"
 >
+  <div
+    class="page-hero__wash"
+    style={`background-image: url("${washImage.src}"); background-position: ${washPosition};`}
+    aria-hidden="true"
+  ></div>
+
   <SiteNav overlay />
 
   <div class:list={["page-hero__content", { "page-hero__content--wide": wide }]}>
@@ -27,9 +49,38 @@ const { title, intro, wide = false, compact = false } = Astro.props;
   .page-hero {
     position: relative;
     z-index: 1;
+    isolation: isolate;
+    overflow: hidden;
     display: grid;
     min-height: clamp(31rem, 60svh, 42rem);
     color: #fffdf4;
+  }
+
+  /* A zoomed-in area of the painting, blurred into abstract color. Oversized so the
+     blur's soft edges stay off-screen. */
+  .page-hero__wash {
+    position: absolute;
+    z-index: -2;
+    inset: -120px;
+    background-repeat: no-repeat;
+    background-size: 320%;
+    filter: blur(60px) saturate(1.1) brightness(0.85);
+    pointer-events: none;
+  }
+
+  /* Nav and title shading, plus a fade into the page teal so the hero ends seamlessly. */
+  .page-hero::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    /* The teal fade is listed first so it paints on top and the hero ends exactly on
+       the page color, with no seam. */
+    background:
+      linear-gradient(180deg, transparent 55%, var(--page-background, #0c4a49) 100%),
+      linear-gradient(180deg, rgba(5, 33, 34, 0.45) 0%, transparent 22%),
+      linear-gradient(25deg, rgba(5, 30, 32, 0.6) 0%, transparent 55%);
+    content: "";
+    pointer-events: none;
   }
 
   .page-hero__content {

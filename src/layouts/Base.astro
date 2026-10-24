@@ -7,19 +7,16 @@ import "@fontsource-variable/ysabeau/wght-italic.css";
 import "@fontsource-variable/ysabeau-office";
 import "@fontsource-variable/ysabeau-office/wght-italic.css";
 import "@fontsource-variable/ysabeau-sc";
-import type { ImageMetadata } from "astro";
 import matterhornImage from "../assets/matterhorn-hero-v1.png";
-import PageBackground from "../components/PageBackground.astro";
 import PageHero from "../components/PageHero.astro";
 import SiteNav from "../components/SiteNav.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 
 interface HeroOptions {
-  image: ImageMetadata;
   intro: string;
-  position?: string;
-  mobilePosition?: string;
   compact?: boolean;
+  /** Which area of the painting the hero washes into color (varies per page). */
+  wash?: number;
 }
 
 interface Props {
@@ -54,19 +51,13 @@ const socialImage = new URL(matterhornImage.src, Astro.site ?? Astro.url.origin)
 
   <body class:list={["interior-page", { "interior-page--backdrop": hero }]}>
     <a class="skip-link" href="#main-content">Skip to content</a>
-    {hero && (
-      <PageBackground
-        image={hero.image}
-        position={hero.position}
-        mobilePosition={hero.mobilePosition}
-      />
-    )}
     {hero ? (
       <PageHero
         title={title}
         intro={hero.intro}
         wide={wide}
         compact={hero.compact}
+        wash={hero.wash}
       />
     ) : (
       <SiteNav compact={reading} />

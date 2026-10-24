@@ -3,7 +3,6 @@
 // up and ready: when you add entries, the empty state disappears and the
 // photo-book layout takes over automatically.
 import Base from "../layouts/Base.astro";
-import wetlandImage from "../assets/wetland-hero-v1.png";
 
 type Photo = { src: string; alt: string; caption: string; size?: "full" | "half" };
 
@@ -18,11 +17,9 @@ const photos: Photo[] = [
   description="Photos by Peter Tran."
   wide
   hero={{
-    image: wetlandImage,
     intro: "Shots of whatever I point a camera at.",
-    position: "center",
-    mobilePosition: "44% center",
     compact: true,
+    wash: 1,
   }}
 >
   {photos.length === 0 ? (

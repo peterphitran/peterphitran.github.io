@@ -3,7 +3,6 @@
 // "blog" content collection (src/content/blog/).
 import Base from "../layouts/Base.astro";
 import { getCollection } from "astro:content";
-import balloonImage from "../assets/hot-air-balloons-clouds-landscape-v1.png";
 
 const posts = (await getCollection("blog")).sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
@@ -14,11 +13,9 @@ const posts = (await getCollection("blog")).sort(
   title="Blog"
   description="Peter Tran's writing on software, projects, and open source."
   hero={{
-    image: balloonImage,
     intro: "Notes from the jungle of software: what I'm building, what broke, and what I learned along the way.",
-    position: "center",
-    mobilePosition: "62% center",
     compact: true,
+    wash: 2,
   }}
 >
   <ol class="ledger" role="list">

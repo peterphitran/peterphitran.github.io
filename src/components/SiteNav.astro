@@ -5,12 +5,14 @@ import matterhornImage from "../assets/matterhorn-hero-v1.png";
 interface Props {
   overlay?: boolean;
   compact?: boolean;
-  variant?: "default" | "links-only";
+  /** Adds a "home" tab before the others. Off on the landing page itself. */
+  showHome?: boolean;
 }
 
-const { overlay = false, compact = false, variant = "default" } = Astro.props;
+const { overlay = false, compact = false, showHome = true } = Astro.props;
 const path = Astro.url.pathname;
 const links = [
+  ...(showHome ? [{ label: "home", href: "/" }] : []),
   { label: "projects", href: "/projects" },
   { label: "gallery", href: "/gallery" },
   { label: "blog", href: "/blog" },
@@ -35,17 +37,11 @@ const menuBackdrop = await getImage({
     {
       "portfolio-nav--overlay": overlay,
       "portfolio-nav--compact": compact,
-      "portfolio-nav--links-only": variant === "links-only",
     },
   ]}
   data-site-nav
 >
   <div class="portfolio-nav__inner">
-    {variant === "default" && (
-      <a class="portfolio-nav__wordmark" href="/" aria-label="Peter Tran, home">
-        peter tran
-      </a>
-    )}
     <nav class="portfolio-nav__links" aria-label="Primary navigation">
       {links.map((link) => (
         <a href={link.href} aria-current={current(link.href)}>{link.label}</a>
@@ -173,23 +169,8 @@ const menuBackdrop = await getImage({
     min-height: 92px;
     margin-inline: auto;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    border-bottom: 1px solid rgba(255, 253, 244, 0.18);
-  }
-
-  .portfolio-nav--links-only .portfolio-nav__inner {
     justify-content: center;
-    border-bottom-color: transparent;
-  }
-
-  .portfolio-nav__wordmark {
-    display: inline-flex;
-    min-height: 44px;
-    align-items: center;
-    color: #fffdf4;
-    font-size: 0.95rem;
-    text-decoration: none;
+    gap: 1rem;
   }
 
   .portfolio-nav__links {
@@ -232,7 +213,7 @@ const menuBackdrop = await getImage({
     cursor: pointer;
   }
 
-  :is(.portfolio-nav__wordmark, .portfolio-nav__links a, .portfolio-nav__toggle, .site-menu__close, .site-menu a):focus-visible {
+  :is(.portfolio-nav__links a, .portfolio-nav__toggle, .site-menu__close, .site-menu a):focus-visible {
     outline: 2px solid var(--pen-strong);
     outline-offset: 3px;
     border-radius: 4px;
@@ -361,10 +342,6 @@ const menuBackdrop = await getImage({
       padding-block: 0;
       align-items: center;
       flex-direction: row;
-      justify-content: space-between;
-    }
-
-    .portfolio-nav--js.portfolio-nav--links-only .portfolio-nav__inner {
       justify-content: flex-end;
     }
 
